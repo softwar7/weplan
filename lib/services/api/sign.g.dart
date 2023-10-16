@@ -107,15 +107,15 @@ class _SignRestClient implements SignRestClient {
   }
 
   @override
-  Future<SignInPostResponse> signIn(
+  Future<HttpResponse<SignInPostResponse>> signIn(
       {required SignInPostRequest request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SignInPostResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<SignInPostResponse>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -132,7 +132,8 @@ class _SignRestClient implements SignRestClient {
               baseUrl,
             ))));
     final value = SignInPostResponse.fromJson(_result.data!);
-    return value;
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

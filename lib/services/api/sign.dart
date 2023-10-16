@@ -16,7 +16,7 @@ abstract class SignRestClient {
   });
 
   @POST('/signin')
-  Future<SignInPostResponse> signIn({
+  Future<HttpResponse<SignInPostResponse>> signIn({
     @Body() required SignInPostRequest request,
   });
 }
