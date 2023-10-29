@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:weplan/screens/main.dart';
+import 'package:provider/provider.dart';
+
+import 'package:weplan/screens/main_app.dart';
+import 'package:weplan/screens/sign_app.dart';
+import 'package:weplan/services/auth_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,17 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'WePlan',
-      theme: ThemeData(
-        colorScheme: const ColorScheme.light(),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: const ColorScheme.dark(),
-        useMaterial3: true,
-      ),
-      home: MainPage(),
+    return Provider<AuthService>(
+      create: (_) => AuthService(),
+      builder: (context, child) =>
+          context.watch<AuthService>().accessToken != null
+              ? const MainMaterialApp()
+              : const SignMaterialApp(),
     );
   }
 }

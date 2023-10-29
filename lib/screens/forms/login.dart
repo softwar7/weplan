@@ -39,7 +39,9 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('WePlan Login'),
+      ),
       body: Container(
         margin: const EdgeInsets.all(20),
         child: Form(
