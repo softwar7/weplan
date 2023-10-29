@@ -12,28 +12,21 @@ abstract class SignRestClient {
   // signup / signin
   @POST('/signup')
   Future<SignUpPostResponse> signUp({
-    @Body() required SignUpPostRequest request,
+    @Field('loginId') required String loginId,
+    @Field('password') required String password,
+    @Field('name') required String name,
+    @Field('phoneNumber') required String phoneNumber,
+    @Field('roleType') required RoleType roleType,
+    @Field('adminPassword') String? adminPassword,
+    // @Body() required SignUpPostRequest request,
   });
 
   @POST('/signin')
   Future<HttpResponse<SignInPostResponse>> signIn({
-    @Body() required SignInPostRequest request,
+    @Field('loginId') required String loginId,
+    @Field('password') required String password,
+    // @Body() required SignInPostRequest request,
   });
-}
-
-@JsonSerializable()
-class SignInPostRequest {
-  String loginId;
-  String password;
-
-  SignInPostRequest({
-    required this.loginId,
-    required this.password,
-  });
-
-  factory SignInPostRequest.fromJson(Map<String, dynamic> json) =>
-      _$SignInPostRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$SignInPostRequestToJson(this);
 }
 
 @JsonSerializable()
@@ -47,30 +40,6 @@ class SignInPostResponse {
   factory SignInPostResponse.fromJson(Map<String, dynamic> json) =>
       _$SignInPostResponseFromJson(json);
   Map<String, dynamic> toJson() => _$SignInPostResponseToJson(this);
-}
-
-@JsonSerializable()
-class SignUpPostRequest {
-  String loginId;
-  String password;
-  String name;
-  String phoneNumber;
-  RoleType roleType;
-  String? adminPassword;
-
-  SignUpPostRequest({
-    required this.loginId,
-    required this.password,
-    required this.name,
-    required this.phoneNumber,
-    required this.roleType,
-    this.adminPassword,
-  });
-
-  factory SignUpPostRequest.fromJson(Map<String, dynamic> json) =>
-      _$SignUpPostRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SignUpPostRequestToJson(this);
 }
 
 @JsonSerializable()
