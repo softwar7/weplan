@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/validator.dart';
 
 void main() {
@@ -84,16 +87,20 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // TODO: Login
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          {
-                            'loginId': loginId!,
-                            'password': password!,
-                          }.toString(),
-                        ),
-                      ),
-                    );
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text(
+                    //       {
+                    //         'loginId': loginId!,
+                    //         'password': password!,
+                    //       }.toString(),
+                    //     ),
+                    //   ),
+                    // );
+                    context.read<AuthService>().signIn(
+                          loginId: loginId!,
+                          password: password!,
+                        );
                   } else {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.onUserInteraction;

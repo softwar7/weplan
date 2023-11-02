@@ -34,8 +34,12 @@ class AuthService extends ChangeNotifier {
     _api = SignRestClient(_dio);
 
     // Assign Token from storage
-    tokenStorage.accessToken.then((value) => _accessToken = value);
-    tokenStorage.refreshToken.then((value) => _refreshToken = value);
+    tokenStorage.accessToken
+        .then((value) => _accessToken = value)
+        .then((_) => notifyListeners());
+    tokenStorage.refreshToken
+        .then((value) => _refreshToken = value)
+        .then((_) => notifyListeners());
   }
 
   InterceptorsWrapper get accessTokenInterceptor {
@@ -103,11 +107,13 @@ class AuthService extends ChangeNotifier {
   void setAccessToken(String token) async {
     this._accessToken = token;
     await tokenStorage.setAccessToken(token);
+    notifyListeners();
   }
 
   void setRefreshToken(String token) async {
     this._refreshToken = token;
     await tokenStorage.setRefreshToken(token);
+    notifyListeners();
   }
 
   Future<HttpResponse<SignInPostResponse>> signIn({

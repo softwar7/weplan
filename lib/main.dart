@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:weplan/screens/main_app.dart';
 import 'package:weplan/screens/sign_app.dart';
+import 'package:weplan/services/api_service.dart';
 import 'package:weplan/services/auth_service.dart';
 
 void main() {
@@ -18,7 +19,10 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<AuthService>(
       create: (_) => AuthService(),
       builder: (context, child) => context.watch<AuthService>().isAuthenticated
-          ? const MainMaterialApp()
+          ? Provider<ApiService>(
+              create: (_) => ApiService(context.watch<AuthService>()),
+              child: const MainMaterialApp(),
+            )
           : const SignMaterialApp(),
     );
   }
