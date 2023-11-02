@@ -30,7 +30,7 @@ linter:
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
     require_trailing_commas: true
     curly_braces_in_flow_control_structures: false
-    unnecessary_this: true
+    unnecessary_this: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
