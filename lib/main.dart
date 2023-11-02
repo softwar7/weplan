@@ -17,10 +17,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AuthService>(
       create: (_) => AuthService(),
-      builder: (context, child) =>
-          context.watch<AuthService>().accessToken == null
-              ? const SignMaterialApp()
-              : const MainMaterialApp(),
+      builder: (context, child) => context.watch<AuthService>().isAuthenticated
+          ? const SignMaterialApp()
+          : const MainMaterialApp(),
     );
   }
 }
