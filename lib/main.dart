@@ -15,12 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<AuthService>(
+    return ChangeNotifierProvider<AuthService>(
       create: (_) => AuthService(),
       builder: (context, child) =>
-          context.watch<AuthService>().accessToken != null
-              ? const MainMaterialApp()
-              : const SignMaterialApp(),
+          context.watch<AuthService>().accessToken == null
+              ? const SignMaterialApp()
+              : const MainMaterialApp(),
     );
   }
 }

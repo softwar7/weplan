@@ -60,37 +60,35 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Main Page'),
       ),
-      drawer: NavigationDrawer(
+      drawer: const NavigationDrawer(
         children: [
           DrawerHeader(
-            child: Container(
-              child: const Column(
-                children: [
-                  Text(
-                    'WePlan',
-                    style: TextStyle(
-                      fontSize: 30,
-                      // color: Colors.white,
-                    ),
+            child: Column(
+              children: [
+                Text(
+                  'WePlan',
+                  style: TextStyle(
+                    fontSize: 30,
+                    // color: Colors.white,
                   ),
-                  Text('Hello World'),
-                ],
-              ),
+                ),
+                Text('Hello World'),
+              ],
             ),
           ),
-          const NavigationDrawerDestination(
+          NavigationDrawerDestination(
             icon: Icon(Icons.home),
             label: Text('Home'),
           ),
-          const NavigationDrawerDestination(
+          NavigationDrawerDestination(
             icon: Icon(Icons.room),
             label: Text('Room'),
           ),
-          const NavigationDrawerDestination(
+          NavigationDrawerDestination(
             icon: Icon(Icons.tv),
             label: Text('Home'),
           ),
-          const NavigationDrawerDestination(
+          NavigationDrawerDestination(
             icon: Icon(Icons.boy),
             label: Text('Home'),
           ),

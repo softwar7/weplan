@@ -25,12 +25,13 @@ class _LoginScaffoldState extends State<LoginScaffold> {
 
   String? loginId = '';
   String? password = '';
+  String? name = '';
+  String? phone = '';
 
   String? validate(String? value, bool Function(String) validator) {
     try {
-      if (value == null || value.isEmpty)
-        throw '해당 필드를 입력해주세요. ';
-      else if (validator(value)) return null;
+      if (value == null) throw '해당 필드를 입력해주세요. ';
+      if (validator(value)) return null;
       throw 'Unknown error';
     } catch (e) {
       return e.toString();
@@ -40,9 +41,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('WePlan Login'),
-      ),
+      appBar: AppBar(),
       body: Container(
         margin: const EdgeInsets.all(20),
         child: Form(
