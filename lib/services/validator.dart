@@ -46,10 +46,9 @@ class Validator {
   }
 
   static bool password(String value) {
-    // min 8 max 15 should include number, capital letter, small letter, special character
-    if (RegExp(
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,15}$',
-    ).hasMatch(value)) {
+    // min 8 max 15 should include number,  small letter
+    // capital letter, special character is not necessary
+    if (RegExp(r'^(?=.*[0-9])(?=.*[a-z]).{8,15}$').hasMatch(value)) {
       return true;
     } else {
       throw '비밀번호는 8~15 자리의 숫자, 대문자, 소문자, 특수문자를 포함해야 합니다.';
