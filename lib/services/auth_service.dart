@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/dio.dart';
 
+import 'package:weplan/services/api/error.dart';
 import 'package:weplan/services/api/sign.dart';
-import 'package:weplan/utils/logger.dart';
 
 class AuthService extends ChangeNotifier {
   final Dio _dio = Dio();
@@ -15,16 +15,7 @@ class AuthService extends ChangeNotifier {
   String? get refreshToken => _refreshToken;
 
   AuthService() {
-    _dio.interceptors.addAll(
-      [
-        InterceptorsWrapper(
-          onError: (e, handler) {
-            if (e.response != null) logger.e(e.response!.data);
-            return handler.next(e);
-          },
-        ),
-      ],
-    );
+    _dio.interceptors.add(ErrorInterceptor());
     _api = SignRestClient(_dio);
   }
 

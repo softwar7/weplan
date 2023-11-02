@@ -1,15 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:weplan/utils/logger.dart';
+
 part 'error.g.dart';
 
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    final error = ErrorResponse.fromJson(err.response?.data);
-    // somehow alert
+    if (err.response != null) {
+      err.response!.statusMessage =
+          ErrorResponse.fromJson(err.response!.data).message;
+      logger.e('status: ${err.response?.statusCode}');
+      logger.e('message: ${err.response?.statusMessage}');
+    }
 
-    super.onError(err, handler);
+    return handler.next(err);
   }
 }
 
