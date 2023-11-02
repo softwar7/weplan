@@ -36,10 +36,11 @@ abstract class RestClient {
 
   @POST('/schedules')
   Future<void> createSchedule({
-    @Body() required PostSchedulesRequest request,
-    @Query('start') DateTime? start,
-    @Query('end') DateTime? end,
-    @Query('channelId') String? channelId,
+    @Field('channelId') required String channelId,
+    @Field('name') required String name,
+    @Field('content') String? content,
+    @Field('start') required DateTime start,
+    @Field('end') required DateTime end,
   });
 
   // // TODO
@@ -52,7 +53,11 @@ abstract class RestClient {
   // @PATCH('/schedules/{scheduleId}')
   // Future<void> updateSchedule({
   //   @Path('scheduleId') String scheduleId,
-  //   @Body() PatchSchedulesRequest request,
+  //   @Field('name') String? name,
+  //   @Field('content') String? content,
+  //   @Field('start') DateTime? start,
+  //   @Field('end') DateTime? end,
+  //   @Field('channelId') String? channelId,
   // });
 
   // schedules requests
@@ -75,48 +80,6 @@ class GetSchedulesResponse {
   factory GetSchedulesResponse.fromJson(Map<String, dynamic> json) =>
       _$GetSchedulesResponseFromJson(json);
   Map<String, dynamic> toJson() => _$GetSchedulesResponseToJson(this);
-}
-
-@JsonSerializable()
-class PostSchedulesRequest {
-  String name;
-  String? content;
-  DateTime start;
-  DateTime end;
-  String channelId;
-
-  PostSchedulesRequest({
-    required this.name,
-    this.content,
-    required this.start,
-    required this.end,
-    required this.channelId,
-  });
-
-  factory PostSchedulesRequest.fromJson(Map<String, dynamic> json) =>
-      _$PostSchedulesRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$PostSchedulesRequestToJson(this);
-}
-
-@JsonSerializable()
-class PatchSchedulesRequest {
-  String? name;
-  String? content;
-  DateTime? start;
-  DateTime? end;
-  String? channelId;
-
-  PatchSchedulesRequest({
-    this.name,
-    this.content,
-    this.start,
-    this.end,
-    this.channelId,
-  });
-
-  factory PatchSchedulesRequest.fromJson(Map<String, dynamic> json) =>
-      _$PatchSchedulesRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$PatchSchedulesRequestToJson(this);
 }
 
 @JsonSerializable()

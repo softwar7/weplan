@@ -1,6 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'error.g.dart';
+
+class ErrorInterceptor extends Interceptor {
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    final error = ErrorResponse.fromJson(err.response?.data);
+    // somehow alert
+
+    super.onError(err, handler);
+  }
+}
 
 @JsonSerializable()
 class ErrorResponse {

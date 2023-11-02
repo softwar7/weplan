@@ -18,14 +18,12 @@ abstract class SignRestClient {
     @Field('phoneNumber') required String phoneNumber,
     @Field('roleType') required RoleType roleType,
     @Field('adminPassword') String? adminPassword,
-    // @Body() required SignUpPostRequest request,
   });
 
   @POST('/signin')
   Future<HttpResponse<SignInPostResponse>> signIn({
     @Field('loginId') required String loginId,
     @Field('password') required String password,
-    // @Body() required SignInPostRequest request,
   });
 }
 

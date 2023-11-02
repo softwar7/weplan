@@ -15,20 +15,22 @@ abstract class AdminRestClient {
   // channels
   @POST('/channels')
   Future<void> createChannel({
-    @Body() required PostAdminChannelsRequest request,
+    @Field() required String name,
+    @Field() required String place,
   });
 
   // // TODO
-  // @DELETE("/channels/{channelId}")
+  // @DELETE('/channels/{channelId}')
   // Future<void> deleteChannel({
-  //   @Path("channelId") String channelId,
+  //   @Path('channelId') String channelId,
   // });
 
   // // TODO
-  // @PATCH("/channels/{channelId}")
+  // @PATCH('/channels/{channelId}')
   // Future<void> updateChannel({
-  //   @Path("channelId") String channelId,
-  //   @Body() PatchRequest request,
+  //   @Path('channelId') String channelId,
+  //   @Field() String? name,
+  //   @Field() String? place,
   // });
 
   // schedules
@@ -37,53 +39,9 @@ abstract class AdminRestClient {
 
   @POST('/schedules/requests')
   Future<void> approveSchedule({
-    @Body() required PostSchedulesRequestsRequest request,
+    @Field() required String id,
+    @Field() required Approval approval,
   });
-}
-
-@JsonSerializable()
-class PostAdminChannelsRequest {
-  final String name;
-  final String place;
-
-  PostAdminChannelsRequest({
-    required this.name,
-    required this.place,
-  });
-
-  factory PostAdminChannelsRequest.fromJson(Map<String, dynamic> json) =>
-      _$PostAdminChannelsRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$PostAdminChannelsRequestToJson(this);
-}
-
-@JsonSerializable()
-class PatchAdminChannelsRequest {
-  final String? name;
-  final String? place;
-
-  PatchAdminChannelsRequest({
-    this.name,
-    this.place,
-  });
-
-  factory PatchAdminChannelsRequest.fromJson(Map<String, dynamic> json) =>
-      _$PatchAdminChannelsRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$PatchAdminChannelsRequestToJson(this);
-}
-
-@JsonSerializable()
-class PostSchedulesRequestsRequest {
-  final String id;
-  final Approval approval;
-
-  PostSchedulesRequestsRequest({
-    required this.id,
-    required this.approval,
-  });
-
-  factory PostSchedulesRequestsRequest.fromJson(Map<String, dynamic> json) =>
-      _$PostSchedulesRequestsRequestFromJson(json);
-  Map<String, dynamic> toJson() => _$PostSchedulesRequestsRequestToJson(this);
 }
 
 @JsonSerializable()

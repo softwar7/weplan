@@ -20,48 +20,6 @@ Map<String, dynamic> _$GetSchedulesResponseToJson(
       'schedules': instance.schedules,
     };
 
-PostSchedulesRequest _$PostSchedulesRequestFromJson(
-        Map<String, dynamic> json) =>
-    PostSchedulesRequest(
-      name: json['name'] as String,
-      content: json['content'] as String?,
-      start: DateTime.parse(json['start'] as String),
-      end: DateTime.parse(json['end'] as String),
-      channelId: json['channelId'] as String,
-    );
-
-Map<String, dynamic> _$PostSchedulesRequestToJson(
-        PostSchedulesRequest instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'content': instance.content,
-      'start': instance.start.toIso8601String(),
-      'end': instance.end.toIso8601String(),
-      'channelId': instance.channelId,
-    };
-
-PatchSchedulesRequest _$PatchSchedulesRequestFromJson(
-        Map<String, dynamic> json) =>
-    PatchSchedulesRequest(
-      name: json['name'] as String?,
-      content: json['content'] as String?,
-      start: json['start'] == null
-          ? null
-          : DateTime.parse(json['start'] as String),
-      end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
-      channelId: json['channelId'] as String?,
-    );
-
-Map<String, dynamic> _$PatchSchedulesRequestToJson(
-        PatchSchedulesRequest instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'content': instance.content,
-      'start': instance.start?.toIso8601String(),
-      'end': instance.end?.toIso8601String(),
-      'channelId': instance.channelId,
-    };
-
 GetChannelsResponse _$GetChannelsResponseFromJson(Map<String, dynamic> json) =>
     GetChannelsResponse(
       channels: (json['channels'] as List<dynamic>)
@@ -226,21 +184,24 @@ class _RestClient implements RestClient {
 
   @override
   Future<void> createSchedule({
-    required PostSchedulesRequest request,
-    DateTime? start,
-    DateTime? end,
-    String? channelId,
+    required String channelId,
+    required String name,
+    String? content,
+    required DateTime start,
+    required DateTime end,
   }) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'start': start?.toIso8601String(),
-      r'end': end?.toIso8601String(),
-      r'channelId': channelId,
-    };
+    final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    final _data = {
+      'channelId': channelId,
+      'name': name,
+      'content': content,
+      'start': start,
+      'end': end,
+    };
+    _data.removeWhere((k, v) => v == null);
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,

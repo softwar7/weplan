@@ -6,54 +6,6 @@ part of 'admin.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostAdminChannelsRequest _$PostAdminChannelsRequestFromJson(
-        Map<String, dynamic> json) =>
-    PostAdminChannelsRequest(
-      name: json['name'] as String,
-      place: json['place'] as String,
-    );
-
-Map<String, dynamic> _$PostAdminChannelsRequestToJson(
-        PostAdminChannelsRequest instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'place': instance.place,
-    };
-
-PatchAdminChannelsRequest _$PatchAdminChannelsRequestFromJson(
-        Map<String, dynamic> json) =>
-    PatchAdminChannelsRequest(
-      name: json['name'] as String?,
-      place: json['place'] as String?,
-    );
-
-Map<String, dynamic> _$PatchAdminChannelsRequestToJson(
-        PatchAdminChannelsRequest instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'place': instance.place,
-    };
-
-PostSchedulesRequestsRequest _$PostSchedulesRequestsRequestFromJson(
-        Map<String, dynamic> json) =>
-    PostSchedulesRequestsRequest(
-      id: json['id'] as String,
-      approval: $enumDecode(_$ApprovalEnumMap, json['approval']),
-    );
-
-Map<String, dynamic> _$PostSchedulesRequestsRequestToJson(
-        PostSchedulesRequestsRequest instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'approval': _$ApprovalEnumMap[instance.approval]!,
-    };
-
-const _$ApprovalEnumMap = {
-  Approval.APPROVED: 'APPROVED',
-  Approval.PENDING: 'PENDING',
-  Approval.REJECTED: 'REJECTED',
-};
-
 GetSchedulesRequestsResponse _$GetSchedulesRequestsResponseFromJson(
         Map<String, dynamic> json) =>
     GetSchedulesRequestsResponse(
@@ -87,13 +39,17 @@ class _AdminRestClient implements AdminRestClient {
   String? baseUrl;
 
   @override
-  Future<void> createChannel(
-      {required PostAdminChannelsRequest request}) async {
+  Future<void> createChannel({
+    required String name,
+    required String place,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    final _data = {
+      'name': name,
+      'place': place,
+    };
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
@@ -140,13 +96,17 @@ class _AdminRestClient implements AdminRestClient {
   }
 
   @override
-  Future<void> approveSchedule(
-      {required PostSchedulesRequestsRequest request}) async {
+  Future<void> approveSchedule({
+    required String id,
+    required Approval approval,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    final _data = {
+      'id': id,
+      'approval': approval,
+    };
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
