@@ -1,0 +1,3 @@
+[submodule "modules/flutter_timetable"]
+	path = modules/flutter_timetable
+	url = https://github.com/parkjbdev/flutter_timetable.git

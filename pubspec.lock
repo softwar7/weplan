@@ -310,11 +310,10 @@ packages:
   flutter_timetable:
     dependency: "direct main"
     description:
-      name: flutter_timetable
-      sha256: "8bb3626a0b56ad1d1be1e7c8ecea7a730556c816d1f0ce37f7cb2306bc6518e4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.3"
+      path: "modules/flutter_timetable"
+      relative: true
+    source: path
+    version: "1.1.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -377,7 +376,7 @@ packages:
     source: hosted
     version: "4.6.0"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"

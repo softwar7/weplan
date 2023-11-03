@@ -35,7 +35,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_timetable: ^1.1.3
+  # flutter_timetable: ^1.1.3
+  flutter_timetable:
+    path: ./modules/flutter_timetable
   json_annotation: ^4.8.1
   retrofit: ^4.0.3
   logger: ^2.0.2+1
@@ -44,6 +46,7 @@ dependencies:
   pretty_dio_logger: ^1.3.1
   provider: ^6.0.5
   flutter_secure_storage: ^9.0.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
