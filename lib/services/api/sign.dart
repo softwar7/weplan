@@ -11,7 +11,7 @@ abstract class SignRestClient {
   factory SignRestClient(Dio dio, {String baseUrl}) = _SignRestClient;
   // signup / signin
   @POST('/signup')
-  Future<SignUpPostResponse> signUp({
+  Future<HttpResponse<void>> signUp({
     @Field('loginId') required String loginId,
     @Field('password') required String password,
     @Field('name') required String name,
@@ -38,14 +38,4 @@ class SignInPostResponse {
   factory SignInPostResponse.fromJson(Map<String, dynamic> json) =>
       _$SignInPostResponseFromJson(json);
   Map<String, dynamic> toJson() => _$SignInPostResponseToJson(this);
-}
-
-@JsonSerializable()
-class SignUpPostResponse {
-  SignUpPostResponse();
-
-  factory SignUpPostResponse.fromJson(Map<String, dynamic> json) =>
-      _$SignUpPostResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SignUpPostResponseToJson(this);
 }

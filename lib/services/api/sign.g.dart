@@ -16,12 +16,6 @@ Map<String, dynamic> _$SignInPostResponseToJson(SignInPostResponse instance) =>
       'isAdmin': instance.isAdmin,
     };
 
-SignUpPostResponse _$SignUpPostResponseFromJson(Map<String, dynamic> json) =>
-    SignUpPostResponse();
-
-Map<String, dynamic> _$SignUpPostResponseToJson(SignUpPostResponse instance) =>
-    <String, dynamic>{};
-
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -41,7 +35,7 @@ class _SignRestClient implements SignRestClient {
   String? baseUrl;
 
   @override
-  Future<SignUpPostResponse> signUp({
+  Future<HttpResponse<void>> signUp({
     required String loginId,
     required String password,
     required String name,
@@ -62,8 +56,8 @@ class _SignRestClient implements SignRestClient {
       'adminPassword': adminPassword,
     };
     _data.removeWhere((k, v) => v == null);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SignUpPostResponse>(Options(
+    final _result =
+        await _dio.fetch<void>(_setStreamType<HttpResponse<void>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -79,8 +73,8 @@ class _SignRestClient implements SignRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SignUpPostResponse.fromJson(_result.data!);
-    return value;
+    final httpResponse = HttpResponse(null, _result);
+    return httpResponse;
   }
 
   @override
