@@ -132,4 +132,15 @@ class AuthService extends ChangeNotifier {
 
     return response;
   }
+
+  Future<void> signOut() async {
+    await Future.wait([
+      tokenStorage.deleteAccessToken(),
+      tokenStorage.deleteRefreshToken(),
+    ]).then((_) {
+      this._accessToken = null;
+      this._refreshToken = null;
+      notifyListeners();
+    });
+  }
 }
