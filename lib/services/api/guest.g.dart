@@ -93,7 +93,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Channel> getChannel({required String channelId}) async {
+  Future<Channel> getChannel({required int channelId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -123,7 +123,7 @@ class _RestClient implements RestClient {
   Future<GetSchedulesResponse> getSchedules({
     DateTime? start,
     DateTime? end,
-    String? channelId,
+    int? channelId,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -156,7 +156,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Schedule> getSchedule({required String scheduleId}) async {
+  Future<Schedule> getSchedule({required int scheduleId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -184,7 +184,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<void> createSchedule({
-    required String channelId,
+    required int channelId,
     required String name,
     String? content,
     required DateTime start,

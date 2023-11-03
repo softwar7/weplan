@@ -97,7 +97,7 @@ class _AdminRestClient implements AdminRestClient {
 
   @override
   Future<void> approveSchedule({
-    required String id,
+    required int id,
     required Approval approval,
   }) async {
     const _extra = <String, dynamic>{};

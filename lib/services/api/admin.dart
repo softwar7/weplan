@@ -39,7 +39,7 @@ abstract class AdminRestClient {
 
   @POST('/schedules/requests')
   Future<void> approveSchedule({
-    @Field() required String id,
+    @Field() required int id,
     @Field() required Approval approval,
   });
 }

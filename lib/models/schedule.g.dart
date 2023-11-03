@@ -7,11 +7,11 @@ part of 'schedule.dart';
 // **************************************************************************
 
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) => Schedule(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
       start: DateTime.parse(json['start'] as String),
       end: DateTime.parse(json['end'] as String),
-      channelId: json['channelId'] as String,
+      channelId: json['channelId'] as int,
       approval: $enumDecode(_$ApprovalEnumMap, json['approval']),
       content: json['content'] as String?,
     );

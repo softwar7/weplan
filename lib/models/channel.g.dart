@@ -7,7 +7,7 @@ part of 'channel.dart';
 // **************************************************************************
 
 Channel _$ChannelFromJson(Map<String, dynamic> json) => Channel(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
       place: json['place'] as String,
       createdBy: json['createdBy'] as String,

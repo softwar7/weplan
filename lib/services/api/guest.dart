@@ -18,7 +18,7 @@ abstract class RestClient {
 
   @GET('/channels/{channelId}')
   Future<Channel> getChannel({
-    @Path('channelId') required String channelId,
+    @Path('channelId') required int channelId,
   });
 
   // schedules
@@ -26,17 +26,17 @@ abstract class RestClient {
   Future<GetSchedulesResponse> getSchedules({
     @Query('start') DateTime? start,
     @Query('end') DateTime? end,
-    @Query('channelId') String? channelId,
+    @Query('channelId') int? channelId,
   });
 
   @GET('/schedules/{scheduleId}')
   Future<Schedule> getSchedule({
-    @Path('scheduleId') required String scheduleId,
+    @Path('scheduleId') required int scheduleId,
   });
 
   @POST('/schedules')
   Future<void> createSchedule({
-    @Field('channelId') required String channelId,
+    @Field('channelId') required int channelId,
     @Field('name') required String name,
     @Field('content') String? content,
     @Field('start') required DateTime start,
@@ -46,18 +46,18 @@ abstract class RestClient {
   // // TODO
   // @DELETE('/schedules/{scheduleId}')
   // Future<void> deleteSchedule({
-  //   @Path('scheduleId') String scheduleId,
+  //   @Path('scheduleId') int scheduleId,
   // });
 
   // // TODO
   // @PATCH('/schedules/{scheduleId}')
   // Future<void> updateSchedule({
-  //   @Path('scheduleId') String scheduleId,
+  //   @Path('scheduleId') int scheduleId,
   //   @Field('name') String? name,
   //   @Field('content') String? content,
   //   @Field('start') DateTime? start,
   //   @Field('end') DateTime? end,
-  //   @Field('channelId') String? channelId,
+  //   @Field('channelId') int? channelId,
   // });
 
   // schedules requests

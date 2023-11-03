@@ -6,12 +6,12 @@ part 'schedule.g.dart';
 
 @JsonSerializable()
 class Schedule {
-  final String id;
+  final int id;
   final String name;
   final String? content;
   final DateTime start;
   final DateTime end;
-  final String channelId;
+  final int channelId;
   final Approval approval;
 
   Schedule({
