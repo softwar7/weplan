@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/validator.dart';
 
@@ -82,25 +84,21 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                   ),
                 ),
               ),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // TODO: Login
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(
-                    //     content: Text(
-                    //       {
-                    //         'loginId': loginId!,
-                    //         'password': password!,
-                    //       }.toString(),
-                    //     ),
-                    //   ),
-                    // );
-                    context.read<AuthService>().signIn(
+                    context
+                        .read<AuthService>()
+                        .signIn(
                           loginId: loginId!,
                           password: password!,
-                        );
+                        )
+                        .catchError((e) {
+                      if (e is DioException)
+                        showErrorSnackBar(context, e.response!.statusMessage!);
+                      throw e;
+                    });
                   } else {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.onUserInteraction;
@@ -108,6 +106,12 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                   }
                 },
                 child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
+                child: const Text('회원가입'),
               ),
             ],
           ),
