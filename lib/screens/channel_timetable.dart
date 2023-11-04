@@ -56,7 +56,8 @@ class _TimeTableState extends State<TimeTable> {
                     Text('${item.data}', style: const TextStyle(fontSize: 30)),
                     const Padding(padding: EdgeInsets.all(10)),
                     Text(
-                        '시작시간: ${DateFormat('MM-dd HH:mm').format(item.start),}',),
+                      '시작시간: ${DateFormat('MM-dd HH:mm').format(item.start)}',
+                    ),
                     Text('종료시간: ${DateFormat('MM-dd HH:mm').format(item.end)}'),
                     Text('${(item.data)}'),
                   ],
