@@ -78,8 +78,8 @@ class AuthService extends ChangeNotifier {
       onResponse: (response, handler) async {
         if (response.headers['AccessToken'] != null) {
           String prevToken = this._accessToken.toString();
-          setAccessToken(response.headers['AccessToken'].toString());
-          if (this._accessToken == response.headers['AccessToken'].toString())
+          setAccessToken(response.headers['AccessToken']![0]);
+          if (this._accessToken == response.headers['AccessToken']![0])
             logger.i(
               'updateAccessTokenInterceptor successfully updated "AccessToken" from $prevToken to ${this._accessToken}',
             );
@@ -95,8 +95,8 @@ class AuthService extends ChangeNotifier {
       onResponse: (response, handler) async {
         if (response.headers['RefreshToken'] != null) {
           String prevToken = this._refreshToken.toString();
-          setRefreshToken(response.headers['RefreshToken'].toString());
-          if (this._refreshToken == response.headers['RefreshToken'].toString())
+          setRefreshToken(response.headers['RefreshToken']![0]);
+          if (this._refreshToken == response.headers['RefreshToken']![0])
             logger.i(
               'updateRefreshTokenInterceptor successfully updated "RefreshToken" from $prevToken to ${this._refreshToken}',
             );
@@ -134,8 +134,8 @@ class AuthService extends ChangeNotifier {
       password: password,
     );
 
-    setAccessToken(response.response.headers['AccessToken'].toString());
-    setRefreshToken(response.response.headers['RefreshToken'].toString());
+    setAccessToken(response.response.headers['AccessToken']![0]);
+    setRefreshToken(response.response.headers['RefreshToken']![0]);
     setIsAdmin(response.data.isAdmin);
 
     return response;
