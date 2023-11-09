@@ -5,7 +5,7 @@ import 'package:retrofit/dio.dart';
 
 import 'package:weplan/services/api/error.dart';
 import 'package:weplan/services/api/sign.dart';
-import 'package:weplan/services/storage/token.dart';
+import 'package:weplan/services/storage/auth.dart';
 import 'package:weplan/utils/logger.dart';
 
 class AuthService extends ChangeNotifier {
@@ -21,7 +21,7 @@ class AuthService extends ChangeNotifier {
 
   bool get isAuthenticated => _accessToken != null;
 
-  TokenStorage tokenStorage = TokenStorage();
+  AuthStorage authStorage = AuthStorage();
 
   AuthService() {
     _dio.interceptors.addAll([
@@ -34,11 +34,14 @@ class AuthService extends ChangeNotifier {
     _api = SignRestClient(_dio);
 
     // Assign Token from storage
-    tokenStorage.accessToken
+    authStorage.accessToken
         .then((value) => _accessToken = value)
         .then((_) => notifyListeners());
-    tokenStorage.refreshToken
+    authStorage.refreshToken
         .then((value) => _refreshToken = value)
+        .then((_) => notifyListeners());
+    authStorage.isAdminUser
+        .then((value) => _isAdmin = value!)
         .then((_) => notifyListeners());
   }
 
@@ -106,13 +109,19 @@ class AuthService extends ChangeNotifier {
 
   void setAccessToken(String token) async {
     this._accessToken = token;
-    await tokenStorage.setAccessToken(token);
+    await authStorage.setAccessToken(token);
     notifyListeners();
   }
 
   void setRefreshToken(String token) async {
     this._refreshToken = token;
-    await tokenStorage.setRefreshToken(token);
+    await authStorage.setRefreshToken(token);
+    notifyListeners();
+  }
+
+  void setIsAdmin(bool value) async {
+    this._isAdmin = value;
+    await authStorage.setIsAdminUser(value);
     notifyListeners();
   }
 
@@ -127,19 +136,20 @@ class AuthService extends ChangeNotifier {
 
     setAccessToken(response.response.headers['AccessToken'].toString());
     setRefreshToken(response.response.headers['RefreshToken'].toString());
-
-    if (response.data.isAdmin) this._isAdmin = true;
+    setIsAdmin(response.data.isAdmin);
 
     return response;
   }
 
   Future<void> signOut() async {
     await Future.wait([
-      tokenStorage.deleteAccessToken(),
-      tokenStorage.deleteRefreshToken(),
+      authStorage.deleteAccessToken(),
+      authStorage.deleteRefreshToken(),
+      authStorage.deleteIsAdminUser(),
     ]).then((_) {
       this._accessToken = null;
       this._refreshToken = null;
+      this._isAdmin = false;
       notifyListeners();
     });
   }

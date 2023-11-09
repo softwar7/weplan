@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 
 import 'package:weplan/models/channel.dart';
@@ -25,5 +24,13 @@ class ApiService {
 
   Future<List<Schedule>> getSchedules(Channel channel) async {
     return (await _guestApi.getSchedules(channelId: channel.id)).schedules;
+  }
+
+  Future<void> createChannel(String name, String place) async {
+    if (_adminApi == null) throw Exception('관리자가 아닙니다.');
+    await _adminApi!.createChannel(
+      name: name,
+      place: place,
+    );
   }
 }
