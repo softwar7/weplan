@@ -21,7 +21,7 @@ class AuthService extends ChangeNotifier {
 
   bool get isAuthenticated => _accessToken != null;
 
-  AuthStorage authStorage = AuthStorage();
+  final AuthStorage _authStorage = AuthStorage();
 
   AuthService() {
     _dio.interceptors.addAll([
@@ -34,13 +34,13 @@ class AuthService extends ChangeNotifier {
     _api = SignRestClient(_dio);
 
     // Assign Token from storage
-    authStorage.accessToken
+    _authStorage.accessToken
         .then((value) => _accessToken = value)
         .then((_) => notifyListeners());
-    authStorage.refreshToken
+    _authStorage.refreshToken
         .then((value) => _refreshToken = value)
         .then((_) => notifyListeners());
-    authStorage.isAdminUser
+    _authStorage.isAdminUser
         .then((value) => _isAdmin = value!)
         .then((_) => notifyListeners());
   }
@@ -109,19 +109,19 @@ class AuthService extends ChangeNotifier {
 
   void setAccessToken(String token) async {
     this._accessToken = token;
-    await authStorage.setAccessToken(token);
+    await _authStorage.setAccessToken(token);
     notifyListeners();
   }
 
   void setRefreshToken(String token) async {
     this._refreshToken = token;
-    await authStorage.setRefreshToken(token);
+    await _authStorage.setRefreshToken(token);
     notifyListeners();
   }
 
   void setIsAdmin(bool value) async {
     this._isAdmin = value;
-    await authStorage.setIsAdminUser(value);
+    await _authStorage.setIsAdminUser(value);
     notifyListeners();
   }
 
@@ -143,9 +143,9 @@ class AuthService extends ChangeNotifier {
 
   Future<void> signOut() async {
     await Future.wait([
-      authStorage.deleteAccessToken(),
-      authStorage.deleteRefreshToken(),
-      authStorage.deleteIsAdminUser(),
+      _authStorage.deleteAccessToken(),
+      _authStorage.deleteRefreshToken(),
+      _authStorage.deleteIsAdminUser(),
     ]).then((_) {
       this._accessToken = null;
       this._refreshToken = null;
