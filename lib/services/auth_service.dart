@@ -26,10 +26,8 @@ class AuthService extends ChangeNotifier {
   AuthService() {
     _dio.interceptors.addAll([
       ErrorInterceptor(),
-      accessTokenInterceptor,
-      refreshTokenInterceptor,
-      updateAccessTokenInterceptor,
-      updateRefreshTokenInterceptor,
+      _accessTokenInterceptor,
+      _refreshTokenInterceptor,
     ]);
     _api = SignRestClient(_dio);
 
@@ -45,63 +43,51 @@ class AuthService extends ChangeNotifier {
         .then((_) => notifyListeners());
   }
 
-  InterceptorsWrapper get accessTokenInterceptor {
+  InterceptorsWrapper get _accessTokenInterceptor {
     return InterceptorsWrapper(
       onRequest: (options, handler) {
         if (this._accessToken != null) {
           options.headers['AccessToken'] = this._accessToken;
           logger.i(
-            'accessTokenInterceptor injects "AccessToken" header: ${this._accessToken}',
+            '[AccessTokenInterceptor] AccessToken Injection: ${this._accessToken}',
           );
         }
         return handler.next(options);
       },
-    );
-  }
-
-  InterceptorsWrapper get refreshTokenInterceptor {
-    return InterceptorsWrapper(
-      onRequest: (options, handler) {
-        if (this._refreshToken != null) {
-          options.headers['RefreshToken'] = this._refreshToken;
-          logger.i(
-            'refreshTokenInterceptor injects "RefreshToken" header: ${this._refreshToken}',
-          );
-        }
-        return handler.next(options);
-      },
-    );
-  }
-
-  InterceptorsWrapper get updateAccessTokenInterceptor {
-    return InterceptorsWrapper(
       onResponse: (response, handler) async {
         if (response.headers['AccessToken'] != null) {
           String prevToken = this._accessToken.toString();
           setAccessToken(response.headers['AccessToken']![0]);
           if (this._accessToken == response.headers['AccessToken']![0])
             logger.i(
-              'updateAccessTokenInterceptor successfully updated "AccessToken" from $prevToken to ${this._accessToken}',
+              '[AccessTokenInterceptor] AccessToken Update: $prevToken => ${this._accessToken}',
             );
         }
-
         return handler.next(response);
       },
     );
   }
 
-  InterceptorsWrapper get updateRefreshTokenInterceptor {
+  InterceptorsWrapper get _refreshTokenInterceptor {
     return InterceptorsWrapper(
+      onRequest: (options, handler) {
+        if (this._refreshToken != null) {
+          options.headers['RefreshToken'] = this._refreshToken;
+          logger.i(
+            '[RefreshTokenInterceptor] RefreshToken Injection: ${this._refreshToken}',
+          );
+        }
+        return handler.next(options);
+      },
       onResponse: (response, handler) async {
         if (response.headers['RefreshToken'] != null) {
           String prevToken = this._refreshToken.toString();
           setRefreshToken(response.headers['RefreshToken']![0]);
           if (this._refreshToken == response.headers['RefreshToken']![0])
             logger.i(
-              'updateRefreshTokenInterceptor successfully updated "RefreshToken" from $prevToken to ${this._refreshToken}',
+              '[RefreshTokenInterceptor] RefreshToken: $prevToken => ${this._refreshToken}',
             );
         }
-
         return handler.next(response);
       },
     );
