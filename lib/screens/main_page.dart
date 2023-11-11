@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:dio/dio.dart';
-import 'package:flutter_timetable/flutter_timetable.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/drawer/divider.dart';
 import 'package:weplan/components/drawer/subject.dart';
-import 'package:weplan/components/snackbar.dart';
-import 'package:weplan/components/timetable.dart';
 import 'package:weplan/screens/forms/channel_form.dart';
-import 'package:weplan/services/api_service.dart';
 import 'package:weplan/services/auth_service.dart';
+import 'package:weplan/viewmodels/channels.dart';
 
 class Menu {
   NavigationDrawerDestination navDrawer;
@@ -22,39 +18,6 @@ class Menu {
   });
 }
 
-var items = [
-  TimetableItem(
-    DateTime.parse('2023-11-04 09:00:00'),
-    DateTime.parse('2023-11-04 12:00:00'),
-    data: 'test',
-  ),
-  TimetableItem(
-    DateTime.parse('2023-11-03 10:00:00'),
-    DateTime.parse('2023-11-03 12:00:00'),
-    data: 'test',
-  ),
-  TimetableItem(
-    DateTime.parse('2023-11-03 12:00:00'),
-    DateTime.parse('2023-11-03 15:00:00'),
-    data: 'test',
-  ),
-  TimetableItem(
-    DateTime.parse('2023-11-05 12:00:00'),
-    DateTime.parse('2023-11-05 15:00:00'),
-    data: 'test',
-  ),
-  TimetableItem(
-    DateTime.parse('2023-11-06 12:00:00'),
-    DateTime.parse('2023-11-06 15:00:00'),
-    data: 'test',
-  ),
-  TimetableItem(
-    DateTime.parse('2023-11-08 17:00:00'),
-    DateTime.parse('2023-11-08 19:00:00'),
-    data: 'test',
-  ),
-];
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -63,14 +26,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Menu> channels = [];
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  int _selectedIndex = 0;
+
   List<Menu> admins = [
     Menu(
       navDrawer: const NavigationDrawerDestination(
         icon: Icon(Icons.add_rounded),
         label: Text('채널 생성'),
       ),
-      body: ChannelForm(),
+      body: const ChannelForm(),
       // body: Container(),
     ),
     Menu(
@@ -98,12 +63,16 @@ class _MainPageState extends State<MainPage> {
     ),
   ];
 
-  int _selectedIndex = 0;
-
   void handleSelect(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
+    if (scaffoldKey.currentState!.isDrawerOpen) {
+      scaffoldKey.currentState?.openEndDrawer();
+    }
+
+    var channels = context.read<ChannelsViewModel>().channels;
 
     int myReservationIndex = channels.length + admins.length + 0;
     int logoutIndex = channels.length + admins.length + 1;
@@ -134,52 +103,20 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  void updateChannels() {
-    context.read<ApiService>().getChannels().then((value) {
-      setState(() {
-        channels = value
-            .map(
-              (e) => Menu(
-                navDrawer: NavigationDrawerDestination(
-                  icon: const Icon(Icons.calendar_month_outlined),
-                  label: Text(e.name),
-                ),
-                body: TimeTableComponent(
-                  items: items,
-                  onTap: (item) {
-                    showSnackBar(context, item.toString());
-                  },
-                ),
-              ),
-            )
-            .toList();
-      });
-      showSnackBar(context, '채널목록을 불러왔습니다.');
-    }).catchError((e) {
-      if (e is DioException)
-        showErrorSnackBar(context, e.response!.statusMessage!);
-      else
-        showErrorSnackBar(context, '채널목록을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    if (!context.read<AuthService>().isAdmin)
-      setState(() {
-        admins = [];
-      });
-    // Update Channels
-    updateChannels();
+
+    context.read<ChannelsViewModel>().updateChannels();
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthService authService = context.watch<AuthService>();
+    var channels = context.watch<ChannelsViewModel>().menus;
+    var isAdmin = context.watch<AuthService>().isAdmin;
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: const Text('Main Page'),
       ),
@@ -193,26 +130,14 @@ class _MainPageState extends State<MainPage> {
           if (channels.isNotEmpty) const DrawerDivider(),
 
           // Admin Menu
-          if (admins.isNotEmpty) const DrawerSubjects('관리자'),
-          if (admins.isNotEmpty) ...admins.map((admin) => admin.navDrawer),
-          if (admins.isNotEmpty) const DrawerDivider(),
+          if (isAdmin) const DrawerSubjects('관리자'),
+          if (isAdmin) ...admins.map((admin) => admin.navDrawer),
+          if (isAdmin) const DrawerDivider(),
 
           ...etc.map((e) => e.navDrawer),
         ],
       ),
       body: [...channels, ...admins, ...etc][_selectedIndex].body,
-      // body: channels.isEmpty
-      //     ? const Center(child: CircularProgressIndicator())
-      //     : channels[_selectedIndex].body,
-      // TODO: 매칭되는 페이지 표시
-      // body: menus[_selectedIndex].body,
-      // body: TimeTable(),
-      // body: TimeTableComponent(
-      //   items: items,
-      //   onTap: (item) {
-      //     showSnackBar(context, item.toString());
-      //   },
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add',
