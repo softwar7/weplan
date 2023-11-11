@@ -24,8 +24,8 @@ abstract class RestClient {
   // schedules
   @GET('/schedules')
   Future<GetSchedulesResponse> getSchedules({
-    @Query('start') DateTime? start,
-    @Query('end') DateTime? end,
+    @Query('start') String? start,
+    @Query('end') String? end,
     @Query('channelId') int? channelId,
   });
 
@@ -39,8 +39,8 @@ abstract class RestClient {
     @Field('channelId') required int channelId,
     @Field('name') required String name,
     @Field('content') String? content,
-    @Field('start') required DateTime start,
-    @Field('end') required DateTime end,
+    @Field('start') required String start,
+    @Field('end') required String end,
   });
 
   // // TODO
@@ -55,8 +55,8 @@ abstract class RestClient {
   //   @Path('scheduleId') int scheduleId,
   //   @Field('name') String? name,
   //   @Field('content') String? content,
-  //   @Field('start') DateTime? start,
-  //   @Field('end') DateTime? end,
+  //   @Field('start') String? start,
+  //   @Field('end') String? end,
   //   @Field('channelId') int? channelId,
   // });
 
@@ -64,8 +64,8 @@ abstract class RestClient {
   @GET('/schedules/requests')
   Future<GetSchedulesRequestsResponse> getScheduleRequests({
     @Query('approval') Approval? approval,
-    @Query('start') DateTime? start,
-    @Query('end') DateTime? end,
+    @Query('start') String? start,
+    @Query('end') String? end,
   });
 }
 
