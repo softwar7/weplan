@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
+import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/auth_service.dart';
-import 'package:weplan/services/validator.dart';
 
 void main() {
   runApp(
@@ -30,17 +30,6 @@ class _LoginScaffoldState extends State<LoginScaffold> {
 
   String? loginId = '';
   String? password = '';
-
-  String? validate(String? value, bool Function(String) validator) {
-    try {
-      if (value == null || value.isEmpty)
-        throw '해당 필드를 입력해주세요. ';
-      else if (validator(value)) return null;
-      throw 'Unknown error';
-    } catch (e) {
-      return e.toString();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

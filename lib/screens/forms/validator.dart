@@ -1,5 +1,16 @@
 import 'package:weplan/models/enum/role_type.dart';
 
+String? validate(String? value, bool Function(String) validator) {
+  try {
+    if (value == null || value.isEmpty)
+      throw '해당 필드를 입력해주세요. ';
+    else if (validator(value)) return null;
+    throw 'Unknown error';
+  } catch (e) {
+    return e.toString();
+  }
+}
+
 class Validator {
   static bool loginId(String value) {
     // min 6 max 15, small case, starts with letter
