@@ -5,14 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:weplan/components/drawer/divider.dart';
 import 'package:weplan/components/drawer/subject.dart';
 import 'package:weplan/screens/forms/channel_form.dart';
+import 'package:weplan/screens/settings_page.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/viewmodels/channels.dart';
 
 class Menu {
+  String title;
   NavigationDrawerDestination navDrawer;
   Widget body;
 
   Menu({
+    required this.title,
     required this.navDrawer,
     required this.body,
   });
@@ -31,14 +34,15 @@ class _MainPageState extends State<MainPage> {
 
   List<Menu> admins = [
     Menu(
+      title: '채널 생성',
       navDrawer: const NavigationDrawerDestination(
         icon: Icon(Icons.add_rounded),
         label: Text('채널 생성'),
       ),
       body: const ChannelForm(),
-      // body: Container(),
     ),
     Menu(
+      title: '예약요청 목록',
       navDrawer: const NavigationDrawerDestination(
         icon: Icon(Icons.task_outlined),
         label: Text('예약요청 목록'),
@@ -48,6 +52,7 @@ class _MainPageState extends State<MainPage> {
   ];
   List<Menu> etc = [
     Menu(
+      title: '나의 예약',
       navDrawer: const NavigationDrawerDestination(
         icon: Icon(Icons.list_outlined),
         label: Text('나의 예약'),
@@ -55,11 +60,14 @@ class _MainPageState extends State<MainPage> {
       body: Container(child: const Text('my reservation')),
     ),
     Menu(
+      title: '설정',
       navDrawer: const NavigationDrawerDestination(
-        icon: Icon(Icons.logout),
-        label: Text('로그아웃'),
+        icon: Icon(Icons.settings),
+        // icon: Icon(Icons.logout),
+        label: Text('설정'),
       ),
-      body: Container(child: const Text('logout')),
+      body: SettingsPage(),
+      // body: Container(child: const Text('logout')),
     ),
   ];
 
@@ -73,34 +81,8 @@ class _MainPageState extends State<MainPage> {
     }
 
     var channels = context.read<ChannelsViewModel>().channels;
-
     int myReservationIndex = channels.length + admins.length + 0;
     int logoutIndex = channels.length + admins.length + 1;
-
-    if (index == logoutIndex) {
-      handleLogout();
-      return;
-    }
-  }
-
-  void handleLogout() {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('로그아웃'),
-        content: const Text('로그아웃 하시겠습니까?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () => context.read<AuthService>().signOut(),
-            child: const Text('확인'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -114,11 +96,12 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     var channels = context.watch<ChannelsViewModel>().menus;
     var isAdmin = context.watch<AuthService>().isAdmin;
+    var selectedMenu = [...channels, ...admins, ...etc][_selectedIndex];
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('Main Page'),
+        title: Text(selectedMenu.title),
       ),
       drawer: NavigationDrawer(
         selectedIndex: _selectedIndex,
@@ -137,7 +120,7 @@ class _MainPageState extends State<MainPage> {
           ...etc.map((e) => e.navDrawer),
         ],
       ),
-      body: [...channels, ...admins, ...etc][_selectedIndex].body,
+      body: selectedMenu.body,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add',

@@ -39,6 +39,7 @@ class ChannelsViewModel extends ChangeNotifier {
     return channels
         .map(
           (e) => Menu(
+            title: e.name,
             navDrawer: NavigationDrawerDestination(
               icon: const Icon(Icons.calendar_month_outlined),
               label: Text(e.name),
