@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:weplan/models/enum/role_type.dart';
 import 'package:weplan/screens/forms/validator.dart';
+import 'package:weplan/services/auth_service.dart';
 
 void main() {
   runApp(
     const MaterialApp(
-      home: LoginScaffold(),
+      home: SignUpScaffold(),
     ),
   );
 }
 
-class LoginScaffold extends StatefulWidget {
-  const LoginScaffold({super.key});
+class SignUpScaffold extends StatefulWidget {
+  const SignUpScaffold({super.key});
 
   @override
-  State<LoginScaffold> createState() => _LoginScaffoldState();
+  State<SignUpScaffold> createState() => _SignUpScaffoldState();
 }
 
-class _LoginScaffoldState extends State<LoginScaffold> {
+class _SignUpScaffoldState extends State<SignUpScaffold> {
   final _formKey = GlobalKey<FormState>();
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
@@ -27,12 +31,14 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   String? password = '';
   String? name = '';
   String? phone = '';
-  String? email = '';
+  RoleType? roleType;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('회원가입'),
+      ),
       body: Container(
         margin: const EdgeInsets.all(20),
         child: Form(
@@ -81,9 +87,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
 
               //phone
               TextFormField(
-                autofillHints: const [
-                  AutofillHints.telephoneNumber
-                ], //동작 안해서 일단 주석처리 했음
+                autofillHints: const [AutofillHints.telephoneNumber],
                 validator: (value) => validate(value, Validator.phoneNumber),
                 onSaved: (value) => phone = value!,
                 decoration: const InputDecoration(
@@ -91,31 +95,17 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                 ),
               ),
 
-              //email
-              TextFormField(
-                autofillHints: const [AutofillHints.email],
-                validator: (value) => validate(value, Validator.emailAddress),
-                onSaved: (value) => email = value!,
-                decoration: const InputDecoration(
-                  labelText: '이메일',
-                ),
-              ),
-
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // TODO: Login
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          {
-                            'loginId': loginId!,
-                            'password': password!,
-                          }.toString(),
-                        ),
-                      ),
-                    );
+                    context.read<AuthService>().signUp(
+                          loginId: loginId!,
+                          password: password!,
+                          name: name!,
+                          phoneNumber: phone!,
+                          roleType: roleType!,
+                        );
                   } else {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.onUserInteraction;

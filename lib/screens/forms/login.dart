@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
+import 'package:weplan/screens/forms/signup.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/utils/logger.dart';
@@ -35,7 +36,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WePlan Login'),
+        title: const Text('로그인'),
       ),
       body: Container(
         margin: const EdgeInsets.all(20),
@@ -103,7 +104,12 @@ class _LoginScaffoldState extends State<LoginScaffold> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignUpScaffold(),
+                    ),
+                  );
                 },
                 child: const Text('회원가입'),
               ),
