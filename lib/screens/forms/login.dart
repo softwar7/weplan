@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/auth_service.dart';
+import 'package:weplan/utils/logger.dart';
 
 void main() {
   runApp(
@@ -84,8 +84,13 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                           password: password!,
                         )
                         .catchError((e) {
-                      if (e is DioException)
-                        showErrorSnackBar(context, e.response!.statusMessage!);
+                      showErrorSnackBar(
+                        context,
+                        e.response?.statusMessage ??
+                            e.message ??
+                            'Unknown Error',
+                      );
+                      logger.e(e);
                       throw e;
                     });
                   } else {

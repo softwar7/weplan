@@ -14,9 +14,9 @@ class AuthStorage {
   Future<bool?> get isAdminUser async =>
       await storage.read(key: isAdmin) == 'true';
 
-  Future<void> setAccessToken(String value) async =>
+  Future<void> setAccessToken(String? value) async =>
       await storage.write(key: accessTokenKey, value: value);
-  Future<void> setRefreshToken(String value) async =>
+  Future<void> setRefreshToken(String? value) async =>
       await storage.write(key: refreshTokenKey, value: value);
   Future<void> setIsAdminUser(bool value) async =>
       await storage.write(key: isAdmin, value: value.toString());

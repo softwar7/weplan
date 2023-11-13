@@ -9,10 +9,10 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response != null) {
-      err.response!.statusMessage =
-          ErrorResponse.fromJson(err.response!.data).message;
-      logger.e('status: ${err.response?.statusCode}');
-      logger.e('message: ${err.response?.statusMessage}');
+      var res = ErrorResponse.fromJson(err.response!.data);
+      err.response!.statusMessage = res.message;
+      logger.e('status: ${err.response!.statusCode}');
+      logger.e('message: ${err.response!.statusMessage}');
     }
 
     return handler.next(err);

@@ -91,19 +91,19 @@ class AuthService extends ChangeNotifier {
         return handler.next(response);
       },
       onError: (e, handler) {
-        if (e.response!.statusCode == 401) signOut();
+        if (e.response?.statusCode == 401) signOut();
         throw e;
       },
     );
   }
 
-  void setAccessToken(String token) async {
+  void setAccessToken(String? token) async {
     this._accessToken = token;
     await _authStorage.setAccessToken(token);
     notifyListeners();
   }
 
-  void setRefreshToken(String token) async {
+  void setRefreshToken(String? token) async {
     this._refreshToken = token;
     await _authStorage.setRefreshToken(token);
     notifyListeners();
@@ -124,8 +124,8 @@ class AuthService extends ChangeNotifier {
       password: password,
     );
 
-    setAccessToken(response.response.headers['AccessToken']![0]);
-    setRefreshToken(response.response.headers['RefreshToken']![0]);
+    setAccessToken(response.response.headers['AccessToken']?[0]);
+    setRefreshToken(response.response.headers['RefreshToken']?[0]);
     setIsAdmin(response.data.isAdmin);
 
     return response;
