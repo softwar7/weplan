@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_timetable/flutter_timetable.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/components/timetable.dart';
 import 'package:weplan/models/channel.dart';
 import 'package:weplan/models/schedule.dart';
-import 'package:weplan/services/api_service.dart';
 
 class TimeTable extends StatefulWidget {
   final Channel channel;
@@ -25,18 +22,19 @@ class _TimeTableState extends State<TimeTable> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<ApiService>()
-        .getSchedules(widget.channel)
-        .then(
-          (res) => setState(() {
-            schedules = res;
-          }),
-        )
-        .catchError((e) {
-      showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
+
+    // context
+    //     .read<ApiService>()
+    //     .getSchedules(widget.channel)
+    //     .then(
+    //       (res) => setState(() {
+    //         schedules = res;
+    //       }),
+    //     )
+    //     .catchError((e) {
+    //   showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
+    // throw e;
+    // });
   }
 
   @override
