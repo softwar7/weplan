@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/dio.dart';
 
+import 'package:weplan/models/enum/role_type.dart';
 import 'package:weplan/services/api/error.dart';
 import 'package:weplan/services/api/sign.dart';
 import 'package:weplan/services/storage/auth.dart';
@@ -129,6 +130,24 @@ class AuthService extends ChangeNotifier {
     setIsAdmin(response.data.isAdmin);
 
     return response;
+  }
+
+  Future<bool> signUp({
+    required String loginId,
+    required String password,
+    required String name,
+    required String phoneNumber,
+    required RoleType roleType,
+  }) async {
+    final response = await _api.signUp(
+      loginId: loginId,
+      password: password,
+      name: name,
+      phoneNumber: phoneNumber,
+      roleType: roleType,
+    );
+
+    return response.response.statusCode == 200;
   }
 
   Future<void> signOut() async {
