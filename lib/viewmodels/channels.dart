@@ -9,24 +9,16 @@ import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/channel.dart';
 
-class ChannelsBasicService extends ChangeNotifier {
+class ChannelsViewModel extends ChangeNotifier {
   final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
 
-  Future<void> createChannel(String name, String place) async {
-    await _api.admin.createChannel(
-      name: name,
-      place: place,
-    );
-  }
-}
-
-class ChannelsViewModel extends ChannelsBasicService {
   List<Channel> _channels = [];
 
   ChannelsViewModel();
 
   Future<List<Channel>> updateChannels() async {
     this._channels = (await _api.guest.getChannels()).channels;
+    notifyListeners();
     return this._channels;
   }
 
@@ -49,5 +41,14 @@ class ChannelsViewModel extends ChannelsBasicService {
           ),
         )
         .toList();
+  }
+
+  // Admin Only
+  Future<void> createChannel(String name, String place) async {
+    await _api.admin.createChannel(
+      name: name,
+      place: place,
+    );
+    updateChannels();
   }
 }
