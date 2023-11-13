@@ -27,6 +27,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   String? password = '';
   String? name = '';
   String? phone = '';
+  String? email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +69,38 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                   ),
                 ),
               ),
+              //name
+              TextFormField(
+                autofillHints: const [AutofillHints.name],
+                validator: (value) => validate(value, Validator.name),
+                onSaved: (value) => name = value!,
+                decoration: const InputDecoration(
+                  labelText: '이름',
+                ),
+              ),
+
+              //phone
+              TextFormField(
+                autofillHints: const [
+                  AutofillHints.telephoneNumber
+                ], //동작 안해서 일단 주석처리 했음
+                validator: (value) => validate(value, Validator.phoneNumber),
+                onSaved: (value) => phone = value!,
+                decoration: const InputDecoration(
+                  labelText: '전화번호',
+                ),
+              ),
+
+              //email
+              TextFormField(
+                autofillHints: const [AutofillHints.email],
+                validator: (value) => validate(value, Validator.emailAddress),
+                onSaved: (value) => email = value!,
+                decoration: const InputDecoration(
+                  labelText: '이메일',
+                ),
+              ),
+
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -89,7 +122,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
                     });
                   }
                 },
-                child: const Text('Login'),
+                child: const Text('회원가입'),
               ),
             ],
           ),

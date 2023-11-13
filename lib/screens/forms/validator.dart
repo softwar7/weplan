@@ -66,6 +66,16 @@ class Validator {
     }
   }
 
+  static bool emailAddress(String value) {
+    // min 1 max 128, must be a valid email address
+    if (RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$')
+        .hasMatch(value)) {
+      return true;
+    } else {
+      throw '이메일 형식이 올바르지 않습니다.';
+    }
+  }
+
   String _password = '';
 
   bool newPassword(String value) {
