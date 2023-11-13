@@ -11,13 +11,17 @@ import 'package:weplan/viewmodels/channels.dart';
 
 class Menu {
   String title;
-  NavigationDrawerDestination navDrawer;
+  Icon icon;
   Widget body;
+  List<Widget>? actions;
+  Widget? floatingActionButton;
 
   Menu({
     required this.title,
-    required this.navDrawer,
+    required this.icon,
     required this.body,
+    this.actions,
+    this.floatingActionButton,
   });
 }
 
@@ -35,39 +39,25 @@ class _MainPageState extends State<MainPage> {
   List<Menu> admins = [
     Menu(
       title: '채널 생성',
-      navDrawer: const NavigationDrawerDestination(
-        icon: Icon(Icons.add_rounded),
-        label: Text('채널 생성'),
-      ),
+      icon: const Icon(Icons.add_rounded),
       body: const ChannelForm(),
     ),
     Menu(
       title: '예약요청 목록',
-      navDrawer: const NavigationDrawerDestination(
-        icon: Icon(Icons.task_outlined),
-        label: Text('예약요청 목록'),
-      ),
+      icon: const Icon(Icons.task_outlined),
       body: Container(),
     ),
   ];
   List<Menu> etc = [
     Menu(
       title: '나의 예약',
-      navDrawer: const NavigationDrawerDestination(
-        icon: Icon(Icons.list_outlined),
-        label: Text('나의 예약'),
-      ),
+      icon: const Icon(Icons.list_outlined),
       body: Container(child: const Text('my reservation')),
     ),
     Menu(
       title: '설정',
-      navDrawer: const NavigationDrawerDestination(
-        icon: Icon(Icons.settings),
-        // icon: Icon(Icons.logout),
-        label: Text('설정'),
-      ),
+      icon: const Icon(Icons.settings),
       body: SettingsPage(),
-      // body: Container(child: const Text('logout')),
     ),
   ];
 
@@ -88,8 +78,14 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-
     context.read<ChannelsViewModel>().updateChannels();
+  }
+
+  Widget navDrawerMapper(Menu menu) {
+    return NavigationDrawerDestination(
+      icon: menu.icon,
+      label: Text(menu.title),
+    );
   }
 
   @override
@@ -102,6 +98,7 @@ class _MainPageState extends State<MainPage> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(selectedMenu.title),
+        actions: selectedMenu.actions,
       ),
       drawer: NavigationDrawer(
         selectedIndex: _selectedIndex,
@@ -109,23 +106,19 @@ class _MainPageState extends State<MainPage> {
         children: [
           // Channel Menu
           if (channels.isNotEmpty) const DrawerSubjects('채널목록'),
-          ...channels.map((channel) => channel.navDrawer),
+          ...channels.map(navDrawerMapper),
           if (channels.isNotEmpty) const DrawerDivider(),
 
           // Admin Menu
           if (isAdmin) const DrawerSubjects('관리자'),
-          if (isAdmin) ...admins.map((admin) => admin.navDrawer),
+          if (isAdmin) ...admins.map(navDrawerMapper),
           if (isAdmin) const DrawerDivider(),
 
-          ...etc.map((e) => e.navDrawer),
+          ...etc.map(navDrawerMapper),
         ],
       ),
       body: selectedMenu.body,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Add',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: selectedMenu.floatingActionButton,
     );
   }
 }

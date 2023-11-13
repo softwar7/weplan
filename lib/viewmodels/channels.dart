@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/models/channel.dart';
-import 'package:weplan/screens/channel_timetable.dart';
 import 'package:weplan/screens/main_page.dart';
+import 'package:weplan/screens/timetable_page.dart';
 import 'package:weplan/services/api_service.dart';
 import 'package:weplan/utils/navigator.dart';
 
@@ -40,11 +40,14 @@ class ChannelsViewModel extends ChangeNotifier {
         .map(
           (e) => Menu(
             title: e.name,
-            navDrawer: NavigationDrawerDestination(
-              icon: const Icon(Icons.calendar_month_outlined),
-              label: Text(e.name),
-            ),
+            icon: const Icon(Icons.calendar_today_outlined),
             body: TimeTable(channel: e),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: context.read<ChannelsViewModel>().updateChannels,
+              ),
+            ],
           ),
         )
         .toList();
