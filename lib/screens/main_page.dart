@@ -6,7 +6,7 @@ import 'package:weplan/components/drawer/divider.dart';
 import 'package:weplan/components/drawer/subject.dart';
 import 'package:weplan/components/menus.dart';
 import 'package:weplan/services/auth_service.dart';
-import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/viewmodels/channels.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -34,12 +34,12 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ChannelsService>().updateChannels();
+    context.read<ChannelsViewModel>().updateChannels();
   }
 
   @override
   Widget build(BuildContext context) {
-    var channels = context.watch<ChannelsService>().viewModel.menus;
+    var channels = context.watch<ChannelsViewModel>().menus;
     var isAdmin = context.watch<AuthService>().isAdmin;
     var selectedMenu = [...channels, ...admins, ...etc][_selectedIndex];
 

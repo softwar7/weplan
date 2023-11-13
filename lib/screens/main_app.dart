@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/screens/main_page.dart';
-import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/utils/navigator.dart';
+import 'package:weplan/viewmodels/channels.dart';
 
 class MainMaterialApp extends StatelessWidget {
   const MainMaterialApp({super.key});
@@ -13,7 +13,9 @@ class MainMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ChannelsService()),
+        ChangeNotifierProvider(
+          create: (context) => ChannelsViewModel(),
+        ),
       ],
       child: MaterialApp(
         title: 'WePlan',

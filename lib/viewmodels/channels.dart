@@ -1,16 +1,40 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:weplan/components/menus.dart';
 import 'package:weplan/models/channel.dart';
 import 'package:weplan/screens/timetable_page.dart';
+import 'package:weplan/services/api_provider.dart';
+import 'package:weplan/utils/navigator.dart';
+import 'package:weplan/viewmodels/channel.dart';
 
-class ChannelsViewModel {
-  List<Channel> channels = [];
+class ChannelsBasicService extends ChangeNotifier {
+  final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
 
-  ChannelsViewModel(this.channels);
+  Future<void> createChannel(String name, String place) async {
+    await _api.admin.createChannel(
+      name: name,
+      place: place,
+    );
+  }
+}
+
+class ChannelsViewModel extends ChannelsBasicService {
+  List<Channel> _channels = [];
+
+  ChannelsViewModel();
+
+  Future<List<Channel>> updateChannels() async {
+    this._channels = (await _api.guest.getChannels()).channels;
+    return this._channels;
+  }
+
+  List<ChannelViewModel> get channels =>
+      this._channels.map((e) => ChannelViewModel(e)).toList();
 
   List<Menu> get menus {
-    return channels
+    return _channels
         .map(
           (e) => Menu(
             title: e.name,
