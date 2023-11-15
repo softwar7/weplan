@@ -8,7 +8,7 @@ import 'package:weplan/models/schedule.dart';
 
 part 'guest.g.dart';
 
-@RestApi(baseUrl: 'http://localhost:8080/api')
+@RestApi(baseUrl: 'https://weplan.parkjb.com/api/guest')
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
   // guest mode
@@ -62,11 +62,13 @@ abstract class RestClient {
 
   // schedules requests
   @GET('/schedules/requests')
-  Future<GetSchedulesRequestsResponse> getScheduleRequests({
+  Future<GetSchedulesResponse> getScheduleRequests({
     @Query('approval') Approval? approval,
     @Query('start') String? start,
     @Query('end') String? end,
   });
+  // @GET('/schedules/requests')
+  // Future<GetSchedulesResponse> getScheduleRequests();
 }
 
 @JsonSerializable()
@@ -93,17 +95,4 @@ class GetChannelsResponse {
   factory GetChannelsResponse.fromJson(Map<String, dynamic> json) =>
       _$GetChannelsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$GetChannelsResponseToJson(this);
-}
-
-@JsonSerializable()
-class GetSchedulesRequestsResponse {
-  final List<Schedule> schedules;
-
-  GetSchedulesRequestsResponse({
-    required this.schedules,
-  });
-
-  factory GetSchedulesRequestsResponse.fromJson(Map<String, dynamic> json) =>
-      _$GetSchedulesRequestsResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$GetSchedulesRequestsResponseToJson(this);
 }

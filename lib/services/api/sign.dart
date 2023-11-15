@@ -6,7 +6,7 @@ import 'package:weplan/models/enum/role_type.dart';
 
 part 'sign.g.dart';
 
-@RestApi(baseUrl: 'http://localhost:8080/api')
+@RestApi(baseUrl: 'https://weplan.parkjb.com/api')
 abstract class SignRestClient {
   factory SignRestClient(Dio dio, {String baseUrl}) = _SignRestClient;
   // signup / signin

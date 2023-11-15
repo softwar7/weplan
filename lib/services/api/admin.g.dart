@@ -31,7 +31,7 @@ class _AdminRestClient implements AdminRestClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:8080/api/admin';
+    baseUrl ??= 'https://weplan.parkjb.com/api/admin';
   }
 
   final Dio _dio;

@@ -7,7 +7,7 @@ import 'package:weplan/models/schedule.dart';
 
 part 'admin.g.dart';
 
-@RestApi(baseUrl: 'http://localhost:8080/api/admin')
+@RestApi(baseUrl: 'https://weplan.parkjb.com/api/admin')
 abstract class AdminRestClient {
   factory AdminRestClient(Dio dio, {String baseUrl}) = _AdminRestClient;
 

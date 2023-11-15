@@ -33,20 +33,6 @@ Map<String, dynamic> _$GetChannelsResponseToJson(
       'channels': instance.channels,
     };
 
-GetSchedulesRequestsResponse _$GetSchedulesRequestsResponseFromJson(
-        Map<String, dynamic> json) =>
-    GetSchedulesRequestsResponse(
-      schedules: (json['schedules'] as List<dynamic>)
-          .map((e) => Schedule.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$GetSchedulesRequestsResponseToJson(
-        GetSchedulesRequestsResponse instance) =>
-    <String, dynamic>{
-      'schedules': instance.schedules,
-    };
-
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -58,7 +44,7 @@ class _RestClient implements RestClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:8080/api';
+    baseUrl ??= 'https://weplan.parkjb.com/api/guest';
   }
 
   final Dio _dio;
@@ -221,7 +207,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<GetSchedulesRequestsResponse> getScheduleRequests({
+  Future<GetSchedulesResponse> getScheduleRequests({
     Approval? approval,
     String? start,
     String? end,
@@ -236,7 +222,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GetSchedulesRequestsResponse>(Options(
+        _setStreamType<GetSchedulesResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -252,7 +238,7 @@ class _RestClient implements RestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = GetSchedulesRequestsResponse.fromJson(_result.data!);
+    final value = GetSchedulesResponse.fromJson(_result.data!);
     return value;
   }
 
