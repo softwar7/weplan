@@ -11,30 +11,29 @@ class ChannelViewModel {
   Channel _channel;
   ChannelViewModel(this._channel);
 
+  Channel get model => _channel;
   int get id => _channel.id;
   String get name => _channel.name;
   String get place => _channel.place;
   String get createdBy => _channel.createdBy;
 
-  List<Schedule> _schedules = [];
-  List<ScheduleViewModel> get schedules =>
-      _schedules.map((e) => ScheduleViewModel(e)).toList();
+  Map<int, ScheduleViewModel> _schedules = {};
+  Map<int, ScheduleViewModel> get schedules => _schedules;
 
   Future<Channel> updateChannel() async {
     this._channel = await _api.guest.getChannel(channelId: this._channel.id);
     return this._channel;
   }
 
-  Future<List<Schedule>> updateSchedules({
+  Future<Map<int, ScheduleViewModel>> updateSchedules({
     DateTime? start,
     DateTime? end,
   }) async {
-    this._schedules = (await _api.guest.getSchedules(
-      channelId: this._channel.id,
-      start: start?.toIso8601String(),
-      end: end?.toIso8601String(),
-    ))
-        .schedules;
+    this._schedules = {
+      for (Schedule e in (await _api.guest.getSchedules()).schedules)
+        e.id: ScheduleViewModel(e),
+    };
+
     return this._schedules;
   }
 

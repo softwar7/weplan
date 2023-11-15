@@ -12,21 +12,23 @@ import 'package:weplan/viewmodels/channel.dart';
 class ChannelsViewModel extends ChangeNotifier {
   final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
 
-  List<Channel> _channels = [];
+  Map<int, ChannelViewModel> _channels = {};
+  Map<int, ChannelViewModel> get channels => this._channels;
+  Map<int, Channel> get models => this._channels.map(
+        (key, value) => MapEntry(key, value.model),
+      );
 
-  ChannelsViewModel();
-
-  Future<List<Channel>> updateChannels() async {
-    this._channels = (await _api.guest.getChannels()).channels;
+  Future<Map<int, ChannelViewModel>> updateChannels() async {
+    this._channels = {
+      for (Channel e in (await _api.guest.getChannels()).channels)
+        e.id: ChannelViewModel(e),
+    };
     notifyListeners();
     return this._channels;
   }
 
-  List<ChannelViewModel> get channels =>
-      this._channels.map((e) => ChannelViewModel(e)).toList();
-
   List<Menu> get menus {
-    return _channels
+    return _channels.values
         .map(
           (e) => Menu(
             title: e.name,
