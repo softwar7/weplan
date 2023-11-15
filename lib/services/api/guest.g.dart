@@ -109,7 +109,7 @@ class _RestClient implements RestClient {
   Future<GetSchedulesResponse> getSchedules({
     String? start,
     String? end,
-    int? channelId,
+    required int channelId,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{

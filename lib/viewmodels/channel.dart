@@ -30,7 +30,8 @@ class ChannelViewModel {
     DateTime? end,
   }) async {
     this._schedules = {
-      for (Schedule e in (await _api.guest.getSchedules()).schedules)
+      for (Schedule e
+          in (await _api.guest.getSchedules(channelId: id)).schedules)
         e.id: ScheduleViewModel(e),
     };
 

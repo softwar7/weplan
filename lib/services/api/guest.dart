@@ -26,7 +26,7 @@ abstract class RestClient {
   Future<GetSchedulesResponse> getSchedules({
     @Query('start') String? start,
     @Query('end') String? end,
-    @Query('channelId') int? channelId,
+    @Query('channelId') required int channelId,
   });
 
   @GET('/schedules/{scheduleId}')
