@@ -92,7 +92,7 @@ class AuthService extends ChangeNotifier {
         return handler.next(response);
       },
       onError: (e, handler) {
-        if (e.response?.statusCode == 401) signOut();
+        signOut();
         throw e;
       },
     );
