@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weplan/screens/main_page.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/services/my_reservation_service.dart';
+import 'package:weplan/services/reservation_request_service.dart';
 import 'package:weplan/utils/navigator.dart';
 
 class MainMaterialApp extends StatelessWidget {
@@ -20,6 +21,9 @@ class MainMaterialApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => MyReservationsService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReservationRequestService(),
         ),
       ],
       child: MaterialApp(
