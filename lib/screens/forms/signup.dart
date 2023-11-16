@@ -31,7 +31,17 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
   String? password = '';
   String? name = '';
   String? phone = '';
-  RoleType? roleType;
+  RoleType roleType = RoleType.GUEST;
+
+  String? validate(String? value, bool Function(String) validator) {
+    try {
+      if (value == null) throw '해당 필드를 입력해주세요. ';
+      if (validator(value)) return null;
+      throw 'Unknown error';
+    } catch (e) {
+      return e.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +56,25 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
           autovalidateMode: _autovalidateMode,
           child: Column(
             children: <Widget>[
+              DropdownButtonFormField<RoleType>(
+                value: roleType,
+                items: const [
+                  DropdownMenuItem(
+                    value: RoleType.GUEST,
+                    child: Text('일반 회원'),
+                  ),
+                  DropdownMenuItem(
+                    value: RoleType.ADMIN,
+                    child: Text('관리자'),
+                  ),
+                ],
+                onChanged: (RoleType? value) {
+                  roleType = value!;
+                },
+                decoration: const InputDecoration(
+                  labelText: '계정 유형',
+                ),
+              ),
               TextFormField(
                 autofillHints: const [AutofillHints.username],
                 validator: (value) => validate(value, Validator.loginId),
@@ -95,7 +124,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                 ),
               ),
 
-              TextButton(
+              ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
@@ -104,7 +133,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                           password: password!,
                           name: name!,
                           phoneNumber: phone!,
-                          roleType: roleType!,
+                          roleType: roleType,
                         );
                   } else {
                     setState(() {
