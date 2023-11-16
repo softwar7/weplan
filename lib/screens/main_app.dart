@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/screens/main_page.dart';
 import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/services/my_reservation_service.dart';
 import 'package:weplan/utils/navigator.dart';
 
 class MainMaterialApp extends StatelessWidget {
@@ -15,6 +17,9 @@ class MainMaterialApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ChannelService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MyReservationsService(),
         ),
       ],
       child: MaterialApp(
@@ -30,6 +35,15 @@ class MainMaterialApp extends StatelessWidget {
         ),
         navigatorKey: navigatorKey,
         home: const MainPage(),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ko', 'KR'),
+        ],
+        locale: const Locale('ko', 'KR'),
       ),
     );
   }
