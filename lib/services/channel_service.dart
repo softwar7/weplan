@@ -9,11 +9,12 @@ import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/channel.dart';
 
-class ChannelsViewModel extends ChangeNotifier {
+class ChannelService extends ChangeNotifier {
   final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
 
   Map<int, ChannelViewModel> _channels = {};
-  Map<int, ChannelViewModel> get channels => this._channels;
+  Map<int, ChannelViewModel> get map => this._channels;
+  List<ChannelViewModel> get list => this._channels.values.toList();
   Map<int, Channel> get models => this._channels.map(
         (key, value) => MapEntry(key, value.model),
       );

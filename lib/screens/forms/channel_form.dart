@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/screens/forms/validator.dart';
-import 'package:weplan/viewmodels/channels.dart';
+import 'package:weplan/services/channel_service.dart';
 
 class ChannelForm extends StatefulWidget {
   const ChannelForm({super.key});
@@ -49,7 +49,7 @@ class _ChannelFormState extends State<ChannelForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   context
-                      .read<ChannelsViewModel>()
+                      .read<ChannelService>()
                       .createChannel(this.name, this.place)
                       .catchError(
                         (e) => showErrorSnackBar(
