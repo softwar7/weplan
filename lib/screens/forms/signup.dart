@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weplan/models/enum/role_type.dart';
 
 import 'package:weplan/services/validator.dart';
 
@@ -28,6 +29,7 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   String? name = '';
   String? phone = '';
   String? email = '';
+  RoleType roleType = RoleType.GUEST;
 
   String? validate(String? value, bool Function(String) validator) {
     try {
@@ -50,6 +52,25 @@ class _LoginScaffoldState extends State<LoginScaffold> {
           autovalidateMode: _autovalidateMode,
           child: Column(
             children: <Widget>[
+              DropdownButtonFormField<RoleType>(
+                value: roleType,
+                items: const [
+                  DropdownMenuItem(
+                    value: RoleType.GUEST,
+                    child: Text('일반 회원'),
+                  ),
+                  DropdownMenuItem(
+                    value: RoleType.ADMIN,
+                    child: Text('관리자'),
+                  ),
+                ],
+                onChanged: (RoleType? value) {
+                  roleType = value!;
+                },
+                decoration: const InputDecoration(
+                  labelText: '계정 유형',
+                ),
+              ),
               TextFormField(
                 autofillHints: const [AutofillHints.username],
                 validator: (value) => validate(value, Validator.loginId),
@@ -91,23 +112,11 @@ class _LoginScaffoldState extends State<LoginScaffold> {
 
               //phone
               TextFormField(
-                autofillHints: const [
-                  AutofillHints.telephoneNumber
-                ], //동작 안해서 일단 주석처리 했음
+                autofillHints: const [AutofillHints.telephoneNumber],
                 validator: (value) => validate(value, Validator.phoneNumber),
                 onSaved: (value) => phone = value!,
                 decoration: const InputDecoration(
                   labelText: '전화번호',
-                ),
-              ),
-
-              //email
-              TextFormField(
-                autofillHints: const [AutofillHints.email],
-                validator: (value) => validate(value, Validator.emailAddress),
-                onSaved: (value) => email = value!,
-                decoration: const InputDecoration(
-                  labelText: '이메일',
                 ),
               ),
 
