@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:weplan/screens/forms/channel_form.dart';
+import 'package:weplan/screens/my_reservations.dart';
 import 'package:weplan/screens/settings_page.dart';
 
 class Menu {
@@ -37,7 +38,8 @@ class Menus {
     Menu(
       title: '나의 예약',
       icon: const Icon(Icons.list_outlined),
-      body: Container(child: const Text('my reservation')),
+      body: const MyReservations(),
+      // body: Container(child: const Text('my reservation')),
     ),
     Menu(
       title: '설정',
