@@ -41,7 +41,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     var channels = context.watch<ChannelService>().menus;
     var isAdmin = context.watch<AuthService>().isAdmin;
-    var selectedMenu = [...channels, ...admins, ...etc][_selectedIndex];
+    var selectedMenu =
+        [...channels, if (isAdmin) ...admins, ...etc][_selectedIndex];
 
     return Scaffold(
       key: scaffoldKey,
