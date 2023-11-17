@@ -138,13 +138,15 @@ class AuthService extends ChangeNotifier {
     required String name,
     required String phoneNumber,
     required RoleType roleType,
+    String? adminPassword,
   }) async {
     final response = await _api.signUp(
       loginId: loginId,
       password: password,
       name: name,
       phoneNumber: phoneNumber,
-      roleType: roleType,
+      roleType: roleType.name,
+      adminPassword: adminPassword,
     );
 
     return response.response.statusCode == 200;
