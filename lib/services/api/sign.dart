@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
-import 'package:weplan/models/enum/role_type.dart';
 
 part 'sign.g.dart';
 
@@ -16,7 +15,8 @@ abstract class SignRestClient {
     @Field('password') required String password,
     @Field('name') required String name,
     @Field('phoneNumber') required String phoneNumber,
-    @Field('roleType') required RoleType roleType,
+    // TODO: Is there a way to serialize RoleType to String?
+    @Field('roleType') required String roleType,
     @Field('adminPassword') String? adminPassword,
   });
 

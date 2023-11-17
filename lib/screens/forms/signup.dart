@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/enum/role_type.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/auth_service.dart';
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: SignUpScaffold(),
-    ),
-  );
-}
 
 class SignUpScaffold extends StatefulWidget {
   const SignUpScaffold({super.key});
@@ -32,6 +25,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
   String? name = '';
   String? phone = '';
   RoleType roleType = RoleType.GUEST;
+  String? adminPassword = '';
 
   String? validate(String? value, bool Function(String) validator) {
     try {
@@ -49,101 +43,130 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
       appBar: AppBar(
         title: const Text('회원가입'),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: _autovalidateMode,
-          child: Column(
-            children: <Widget>[
-              DropdownButtonFormField<RoleType>(
-                value: roleType,
-                items: const [
-                  DropdownMenuItem(
-                    value: RoleType.GUEST,
-                    child: Text('일반 회원'),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            autovalidateMode: _autovalidateMode,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  autofillHints: const [AutofillHints.username],
+                  validator: (value) => validate(value, Validator.loginId),
+                  onSaved: (value) => loginId = value!,
+                  decoration: const InputDecoration(
+                    labelText: '아이디',
                   ),
-                  DropdownMenuItem(
-                    value: RoleType.ADMIN,
-                    child: Text('관리자'),
-                  ),
-                ],
-                onChanged: (RoleType? value) {
-                  roleType = value!;
-                },
-                decoration: const InputDecoration(
-                  labelText: '계정 유형',
                 ),
-              ),
-              TextFormField(
-                autofillHints: const [AutofillHints.username],
-                validator: (value) => validate(value, Validator.loginId),
-                onSaved: (value) => loginId = value!,
-                decoration: const InputDecoration(
-                  labelText: '아이디',
-                ),
-              ),
-              TextFormField(
-                obscureText: !_passwordVisible,
-                autofillHints: const [AutofillHints.password],
-                validator: (value) => validate(value, Validator.password),
-                onSaved: (value) => password = value!,
-                decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _passwordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility,
+                TextFormField(
+                  obscureText: !_passwordVisible,
+                  autofillHints: const [AutofillHints.password],
+                  validator: (value) => validate(value, Validator.password),
+                  onSaved: (value) => password = value!,
+                  decoration: InputDecoration(
+                    labelText: '비밀번호',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
-                    },
                   ),
                 ),
-              ),
-              //name
-              TextFormField(
-                autofillHints: const [AutofillHints.name],
-                validator: (value) => validate(value, Validator.name),
-                onSaved: (value) => name = value!,
-                decoration: const InputDecoration(
-                  labelText: '이름',
+                //name
+                TextFormField(
+                  autofillHints: const [AutofillHints.name],
+                  validator: (value) => validate(value, Validator.name),
+                  onSaved: (value) => name = value!,
+                  decoration: const InputDecoration(
+                    labelText: '이름',
+                  ),
                 ),
-              ),
 
-              //phone
-              TextFormField(
-                autofillHints: const [AutofillHints.telephoneNumber],
-                validator: (value) => validate(value, Validator.phoneNumber),
-                onSaved: (value) => phone = value!,
-                decoration: const InputDecoration(
-                  labelText: '전화번호',
+                //phone
+                TextFormField(
+                  autofillHints: const [AutofillHints.telephoneNumber],
+                  validator: (value) => validate(value, Validator.phoneNumber),
+                  onSaved: (value) => phone = value!,
+                  decoration: const InputDecoration(
+                    labelText: '전화번호',
+                  ),
                 ),
-              ),
 
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    context.read<AuthService>().signUp(
-                          loginId: loginId!,
-                          password: password!,
-                          name: name!,
-                          phoneNumber: phone!,
-                          roleType: roleType,
-                        );
-                  } else {
-                    setState(() {
-                      _autovalidateMode = AutovalidateMode.onUserInteraction;
-                    });
-                  }
-                },
-                child: const Text('회원가입'),
-              ),
-            ],
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: roleType == RoleType.ADMIN,
+                          onChanged: (value) => setState(() {
+                            // toggle between admin and guest
+                            roleType = value! ? RoleType.ADMIN : RoleType.GUEST;
+                          }),
+                        ),
+                        const Text('관리자'),
+                      ],
+                    ),
+                  ],
+                ),
+                TextFormField(
+                  enabled: roleType == RoleType.ADMIN,
+                  validator: (value) => roleType == RoleType.ADMIN
+                      ? validate(value, Validator.adminPassword)
+                      : null,
+                  onSaved: (value) => adminPassword = value!,
+                  decoration: const InputDecoration(
+                    labelText: '관리자 코드',
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        context
+                            .read<AuthService>()
+                            .signUp(
+                              loginId: loginId!,
+                              password: password!,
+                              name: name!,
+                              phoneNumber: phone!,
+                              roleType: roleType,
+                              adminPassword: roleType == RoleType.ADMIN
+                                  ? adminPassword
+                                  : null,
+                            )
+                            .then((value) {
+                          showSnackBar(context, '회원가입에 성공했습니다.');
+                          Navigator.pop(context);
+                        }).catchError((e) {
+                          String message = e.response?.statusMessage ??
+                              e.message ??
+                              'Unknown Error';
+                          showErrorSnackBar(context, message);
+                          throw e;
+                        });
+                      } else {
+                        setState(() {
+                          _autovalidateMode =
+                              AutovalidateMode.onUserInteraction;
+                        });
+                      }
+                    },
+                    child: const Text('회원가입'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

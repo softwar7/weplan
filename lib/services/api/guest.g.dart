@@ -107,14 +107,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<GetSchedulesResponse> getSchedules({
-    String? start,
-    String? end,
+    DateTime? start,
+    DateTime? end,
     required int channelId,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'start': start,
-      r'end': end,
+      r'start': start?.toIso8601String(),
+      r'end': end?.toIso8601String(),
       r'channelId': channelId,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -209,14 +209,14 @@ class _RestClient implements RestClient {
   @override
   Future<GetSchedulesResponse> getScheduleRequests({
     Approval? approval,
-    String? start,
-    String? end,
+    DateTime? start,
+    DateTime? end,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'approval': approval?.name,
-      r'start': start,
-      r'end': end,
+      r'start': start?.toIso8601String(),
+      r'end': end?.toIso8601String(),
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

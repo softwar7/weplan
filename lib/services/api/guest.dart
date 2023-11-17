@@ -24,8 +24,8 @@ abstract class RestClient {
   // schedules
   @GET('/schedules')
   Future<GetSchedulesResponse> getSchedules({
-    @Query('start') String? start,
-    @Query('end') String? end,
+    @Query('start') DateTime? start,
+    @Query('end') DateTime? end,
     @Query('channelId') required int channelId,
   });
 
@@ -39,7 +39,9 @@ abstract class RestClient {
     @Field('channelId') required int channelId,
     @Field('name') required String name,
     @Field('content') String? content,
+    // TODO: Is there a way to serialize DateTime to String?
     @Field('start') required String start,
+    // TODO: Is there a way to serialize DateTime to String?
     @Field('end') required String end,
   });
 
@@ -64,11 +66,15 @@ abstract class RestClient {
   @GET('/schedules/requests')
   Future<GetSchedulesResponse> getScheduleRequests({
     @Query('approval') Approval? approval,
-    @Query('start') String? start,
-    @Query('end') String? end,
+    @Query('start') DateTime? start,
+    @Query('end') DateTime? end,
   });
   // @GET('/schedules/requests')
   // Future<GetSchedulesResponse> getScheduleRequests();
+}
+
+extension Iso8061SerializableDateTime on DateTime {
+  String toJson() => this.toIso8601String();
 }
 
 @JsonSerializable()
