@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/enum/approval.dart';
 import 'package:weplan/models/schedule.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/utils/relative_date.dart';
 
-class ScheduleViewModel {
+class ScheduleViewModel extends ChangeNotifier {
   ApiProvider api = navigatorKey.currentContext!.read<ApiProvider>();
+  BuildContext context = navigatorKey.currentContext!;
 
   Schedule _schedule;
 
@@ -36,7 +38,23 @@ class ScheduleViewModel {
   }
 
   Future<Schedule> updateSchedule() async {
-    this._schedule = await api.guest.getSchedule(scheduleId: _schedule.id);
+    Schedule schedule =
+        await api.guest.getSchedule(scheduleId: _schedule.id).then((value) {
+      showSnackBar(context, '스케쥴 동기화 완료');
+      return value;
+    }).catchError((e) {
+      showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
+      throw e;
+    });
+    this._schedule = schedule;
+
+    notifyListeners();
     return this._schedule;
+  }
+
+  Future<void> approve(Approval approval) async {
+    // TODO: Is there any way to send approval instead of approval.name?
+    return await api.admin
+        .approveSchedule(id: this._schedule.id, approval: approval.name);
   }
 }

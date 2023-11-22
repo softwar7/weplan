@@ -22,13 +22,14 @@ class ChannelService extends ChangeNotifier {
       );
 
   Future<Map<int, ChannelViewModel>> updateChannels() async {
-    List<Channel> channels = [];
-    try {
-      channels = (await _api.guest.getChannels()).channels;
-      if (context.mounted) showSnackBar(context, '채널 동기화 완료');
-    } catch (e) {
-      if (context.mounted) showErrorSnackBar(context, '채널 동기화 실패');
-    }
+    List<Channel> channels = await _api.guest.getChannels().then((value) {
+      showSnackBar(context, '채널 동기화 완료');
+      return value.channels;
+    }).catchError((e) {
+      showErrorSnackBar(context, '채널을 불러오는 중 오류가 발생했습니다.');
+      throw e;
+    });
+
     this._channels = {for (Channel e in channels) e.id: ChannelViewModel(e)};
     notifyListeners();
     return this._channels;
@@ -54,10 +55,18 @@ class ChannelService extends ChangeNotifier {
 
   // Admin Only
   Future<void> createChannel(String name, String place) async {
-    await _api.admin.createChannel(
+    await _api.admin
+        .createChannel(
       name: name,
       place: place,
-    );
-    updateChannels();
+    )
+        .then((value) {
+      showSnackBar(context, '채널 생성 완료');
+    }).catchError((e) {
+      showErrorSnackBar(context, '채널 생성 중 오류가 발생했습니다.');
+      throw e;
+    });
+
+    await updateChannels();
   }
 }
