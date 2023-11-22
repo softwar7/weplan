@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/menus.dart';
+import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/channel.dart';
 import 'package:weplan/screens/timetable_page.dart';
 import 'package:weplan/services/api_provider.dart';
@@ -11,6 +12,7 @@ import 'package:weplan/viewmodels/channel.dart';
 
 class ChannelService extends ChangeNotifier {
   final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
+  BuildContext context = navigatorKey.currentContext!;
 
   Map<int, ChannelViewModel> _channels = {};
   Map<int, ChannelViewModel> get map => this._channels;
@@ -20,10 +22,14 @@ class ChannelService extends ChangeNotifier {
       );
 
   Future<Map<int, ChannelViewModel>> updateChannels() async {
-    this._channels = {
-      for (Channel e in (await _api.guest.getChannels()).channels)
-        e.id: ChannelViewModel(e),
-    };
+    List<Channel> channels = [];
+    try {
+      channels = (await _api.guest.getChannels()).channels;
+      if (context.mounted) showSnackBar(context, '채널 동기화 완료');
+    } catch (e) {
+      if (context.mounted) showErrorSnackBar(context, '채널 동기화 실패');
+    }
+    this._channels = {for (Channel e in channels) e.id: ChannelViewModel(e)};
     notifyListeners();
     return this._channels;
   }
@@ -38,7 +44,7 @@ class ChannelService extends ChangeNotifier {
             actions: [
               IconButton(
                 icon: const Icon(Icons.refresh),
-                onPressed: () {},
+                onPressed: e.updateSchedules,
               ),
             ],
           ),

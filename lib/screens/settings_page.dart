@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/channel_service.dart';
 
@@ -13,13 +12,7 @@ class SettingsPage extends StatelessWidget {
     (context) => ListTile(
           leading: const Icon(Icons.refresh),
           title: const Text('채널 동기화'),
-          onTap: () {
-            context
-                .read<ChannelService>()
-                .updateChannels()
-                .then((value) => showSnackBar(context, '채널 동기화 완료'))
-                .catchError((e) => showErrorSnackBar(context, '채널 동기화 실패'));
-          },
+          onTap: context.read<ChannelService>().updateChannels,
         ),
     (context) => ListTile(
           leading: const Icon(Icons.logout),
