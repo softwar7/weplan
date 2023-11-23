@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/components/timetable.dart';
 import 'package:weplan/viewmodels/channel.dart';
+import 'package:weplan/viewmodels/schedule.dart';
 
 class TimeTable extends StatefulWidget {
   final ChannelViewModel channel;
@@ -34,6 +35,7 @@ class _TimeTableState extends State<TimeTable> {
       value: widget.channel,
       builder: (context, child) => TimeTableComponent(
         onTap: (item) {
+          ScheduleViewModel schedule = item.data as ScheduleViewModel;
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
@@ -44,18 +46,15 @@ class _TimeTableState extends State<TimeTable> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text(
-                        '${item.data}',
-                        style: const TextStyle(fontSize: 30),
-                      ),
+                      Text(schedule.name, style: const TextStyle(fontSize: 30)),
                       const Padding(padding: EdgeInsets.all(10)),
+                      Text('내용: ${schedule.content}'),
                       Text(
-                        '시작시간: ${DateFormat('MM-dd HH:mm').format(item.start)}',
+                        '시작시간: ${DateFormat('MM-dd HH:mm').format(schedule.start)}',
                       ),
                       Text(
-                        '종료시간: ${DateFormat('MM-dd HH:mm').format(item.end)}',
+                        '종료시간: ${DateFormat('MM-dd HH:mm').format(schedule.end)}',
                       ),
-                      Text('${(item.data)}'),
                     ],
                   ),
                 ),
