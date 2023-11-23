@@ -7,6 +7,7 @@ import 'package:weplan/screens/main_app.dart';
 import 'package:weplan/screens/sign_app.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/services/auth_service.dart';
+import 'package:weplan/theme/theme_provider.dart';
 
 void main() {
   timeago.setLocaleMessages('ko', timeago.KoMessages());
@@ -18,8 +19,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthService>(
-      create: (_) => AuthService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<AuthService>(
+          create: (_) => AuthService(),
+        ),
+      ],
       builder: (context, child) => context.watch<AuthService>().isAuthenticated
           ? Provider<ApiProvider>(
               create: (_) => ApiProvider(context.watch<AuthService>()),
