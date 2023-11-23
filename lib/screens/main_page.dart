@@ -41,6 +41,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     var channels = context.watch<ChannelService>().menus;
     var isAdmin = context.watch<AuthService>().isAdmin;
+    // FIXME: if channel is deleted when updateChannels, _selectedIndex can be out of range.
     var selectedMenu =
         [...channels, if (isAdmin) ...admins, ...etc][_selectedIndex];
 
@@ -55,9 +56,10 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: handleSelect,
         children: [
           // Channel Menu
-          if (channels.isNotEmpty) const DrawerSubjects('채널목록'),
+          const DrawerSubjects('채널목록'),
           ...channels.map(Menus.navDrawerMapper),
-          if (channels.isNotEmpty) const DrawerDivider(),
+          if (channels.isEmpty) const DrawerSubjects('현재 등록된 채널이 없습니다.'),
+          const DrawerDivider(),
 
           // Admin Menu
           if (isAdmin) const DrawerSubjects('관리자'),
