@@ -25,8 +25,18 @@ class ChannelViewModel extends ChangeNotifier {
   Map<int, ScheduleViewModel> _schedules = {};
   Map<int, ScheduleViewModel> get schedules => _schedules;
 
-  Future<Channel> updateChannel() async {
-    this._channel = await _api.guest.getChannel(channelId: this._channel.id);
+  Future<Channel> updateChannel({
+    bool verbose = true,
+  }) async {
+    this._channel =
+        await _api.guest.getChannel(channelId: this._channel.id).then((value) {
+      if (verbose) showSnackBar(context, '${_channel.name} 채널 동기화 완료');
+      return value;
+    }).catchError((e) {
+      if (verbose)
+        showErrorSnackBar(context, '${_channel.name} 채널을 불러오는 중 오류가 발생했습니다.');
+      throw e;
+    });
     notifyListeners();
     return this._channel;
   }
@@ -34,13 +44,14 @@ class ChannelViewModel extends ChangeNotifier {
   Future<Map<int, ScheduleViewModel>> updateSchedules({
     DateTime? start,
     DateTime? end,
+    bool verbose = true,
   }) async {
     List<Schedule> schedules =
         await _api.guest.getSchedules(channelId: id).then((value) {
-      showSnackBar(context, '스케쥴 동기화 완료');
+      if (verbose) showSnackBar(context, '채널 스케쥴 동기화 완료');
       return value.schedules;
     }).catchError((e) {
-      showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
+      if (verbose) showErrorSnackBar(context, '채널 스케쥴을 불러오는 중 오류가 발생했습니다.');
       throw e;
     });
 
@@ -58,13 +69,21 @@ class ChannelViewModel extends ChangeNotifier {
     required DateTime start,
     required DateTime end,
     String? content,
+    bool verbose = true,
   }) async {
-    return await _api.guest.createSchedule(
+    return await _api.guest
+        .createSchedule(
       channelId: channelId ?? _channel.id,
       name: name,
       start: start.toIso8601String(),
       end: end.toIso8601String(),
       content: content,
-    );
+    )
+        .then((value) {
+      if (verbose) showSnackBar(context, '스케쥴 생성 완료');
+    }).catchError((e) {
+      if (verbose) showErrorSnackBar(context, '스케쥴 생성 중 오류가 발생했습니다.');
+      throw e;
+    });
   }
 }

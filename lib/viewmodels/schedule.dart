@@ -37,13 +37,15 @@ class ScheduleViewModel extends ChangeNotifier {
       return "$relativeStart ${DateFormat("HH:mm").format(start)} - $relativeEnd ${DateFormat("HH:mm").format(end)}";
   }
 
-  Future<Schedule> updateSchedule() async {
+  Future<Schedule> updateSchedule({
+    bool verbose = true,
+  }) async {
     Schedule schedule =
         await api.guest.getSchedule(scheduleId: _schedule.id).then((value) {
-      showSnackBar(context, '스케쥴 동기화 완료');
+      if (verbose) showSnackBar(context, '스케쥴 동기화 완료');
       return value;
     }).catchError((e) {
-      showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
+      if (verbose) showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
       throw e;
     });
     this._schedule = schedule;
@@ -52,9 +54,16 @@ class ScheduleViewModel extends ChangeNotifier {
     return this._schedule;
   }
 
-  Future<void> approve(Approval approval) async {
-    // TODO: Is there any way to send approval instead of approval.name?
+  Future<void> approve(Approval approval, {bool verbose = true}) async {
     return await api.admin
-        .approveSchedule(id: this._schedule.id, approval: approval.name);
+        // TODO: Is there any way to send approval instead of approval.name?
+        .approveSchedule(id: this._schedule.id, approval: approval.name)
+        .then((value) {
+      if (verbose) showSnackBar(context, '승인 완료');
+      return value;
+    }).catchError((e) {
+      if (verbose) showErrorSnackBar(context, '승인 중 오류가 발생했습니다.');
+      throw e;
+    });
   }
 }

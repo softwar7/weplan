@@ -13,20 +13,22 @@ class MyReservationsService extends ChangeNotifier {
   BuildContext context = navigatorKey.currentContext!;
 
   MyReservationsService() {
-    this.update();
+    this.update(verbose: false);
   }
 
   Map<int, ScheduleViewModel> _scheduleMap = {};
   Map<int, ScheduleViewModel> get map => this._scheduleMap;
   List<ScheduleViewModel> get list => this._scheduleMap.values.toList();
 
-  Future<Map<int, ScheduleViewModel>> update() async {
+  Future<Map<int, ScheduleViewModel>> update({
+    bool verbose = true,
+  }) async {
     List<Schedule> schedules =
         await _api.guest.getScheduleRequests().then((value) {
-      showSnackBar(context, '예약 동기화 완료');
+      if (verbose) showSnackBar(context, '예약 동기화 완료');
       return value.schedules;
     }).catchError((e) {
-      showErrorSnackBar(context, '예약을 불러오는 중 오류가 발생했습니다.');
+      if (verbose) showErrorSnackBar(context, '예약을 불러오는 중 오류가 발생했습니다.');
       throw e;
     });
 
