@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:weplan/components/menus.dart';
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/channel.dart';
+import 'package:weplan/screens/forms/schedule_form.dart';
 import 'package:weplan/screens/timetable_page.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
@@ -30,6 +31,17 @@ class ChannelService extends ChangeNotifier {
             body: TimeTable(channel: e),
             actions: [
               IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScheduleForm(channel: e),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: e.updateSchedules,
               ),
@@ -53,6 +65,29 @@ class ChannelService extends ChangeNotifier {
     this._channels = {for (Channel e in channels) e.id: ChannelViewModel(e)};
     notifyListeners();
     return this._channels;
+  }
+
+  Future<void> createSchedule({
+    required int channelId,
+    required String name,
+    required DateTime start,
+    required DateTime end,
+    String? content,
+    bool verbose = true,
+  }) {
+    return _api.guest
+        .createSchedule(
+      channelId: channelId,
+      name: name,
+      start: start.toIso8601String(),
+      end: end.toIso8601String(),
+    )
+        .then((value) {
+      if (verbose) showSnackBar(context, '스케쥴 생성 완료');
+    }).catchError((e) {
+      if (verbose) showErrorSnackBar(context, '스케쥴 생성 중 오류가 발생했습니다.');
+      throw e;
+    });
   }
 
   // Admin Only
