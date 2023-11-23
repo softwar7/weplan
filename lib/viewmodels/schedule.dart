@@ -59,7 +59,7 @@ class ScheduleViewModel extends ChangeNotifier {
         // TODO: Is there any way to send approval instead of approval.name?
         .approveSchedule(id: this._schedule.id, approval: approval.name)
         .then((value) {
-      if (verbose) showSnackBar(context, '승인 완료');
+      if (verbose) showSnackBar(context, '처리 완료');
       return value;
     }).catchError((e) {
       if (verbose) showErrorSnackBar(context, '승인 중 오류가 발생했습니다.');

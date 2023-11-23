@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
-import 'package:weplan/models/enum/approval.dart';
 import 'package:weplan/models/schedule.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
@@ -14,7 +13,7 @@ class ReservationRequestService extends ChangeNotifier {
   BuildContext context = navigatorKey.currentContext!;
 
   ReservationRequestService() {
-    this.update(verbose: false);
+    this.update();
   }
 
   Map<int, ScheduleViewModel> _scheduleMap = {};
@@ -26,10 +25,10 @@ class ReservationRequestService extends ChangeNotifier {
   }) async {
     List<Schedule> schedules =
         await _api.admin.getScheduleRequests().then((value) {
-      if (verbose) showSnackBar(navigatorKey.currentContext!, '예약 동기화 완료');
+      if (verbose) showSnackBar(navigatorKey.currentContext!, '예약요청 목록 동기화 완료');
       return value.schedules;
     }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '예약을 불러오는 중 오류가 발생했습니다.');
+      if (verbose) showErrorSnackBar(context, '예약요청 목록을 불러오는 중 오류가 발생했습니다.');
       throw e;
     });
 
@@ -40,19 +39,15 @@ class ReservationRequestService extends ChangeNotifier {
     return this._scheduleMap;
   }
 
-  Future<void> approve(
-    int id,
-    Approval approval, {
-    bool verbose = true,
-  }) async {
-    return await _api.admin
-        // TODO: Is there any way to send approval instead of approval.name?
-        .approveSchedule(id: id, approval: approval.name)
-        .then((value) {
-      if (verbose) showSnackBar(context, '예약 승인 완료');
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '예약 승인 중 오류가 발생했습니다.');
-      throw e;
-    });
-  }
+  // Future<void> approve(int id, Approval approval, {bool verbose = true}) async {
+  //   return await _api.admin
+  //       // TODO: Is there any way to send approval instead of approval.name?
+  //       .approveSchedule(id: id, approval: approval.name)
+  //       .then((value) {
+  //     if (verbose) showSnackBar(context, '예약 승인 완료');
+  //   }).catchError((e) {
+  //     if (verbose) showErrorSnackBar(context, '예약 승인 중 오류가 발생했습니다.');
+  //     throw e;
+  //   });
+  // }
 }

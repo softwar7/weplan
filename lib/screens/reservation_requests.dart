@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'package:weplan/components/approval_status.dart';
 import 'package:weplan/components/approve_buttons.dart';
-import 'package:weplan/services/my_reservation_service.dart';
 import 'package:weplan/services/reservation_request_service.dart';
 import 'package:weplan/viewmodels/schedule.dart';
 
@@ -17,7 +16,13 @@ class ReservationRequests extends StatefulWidget {
 
 class _ReservationRequestsState extends State<ReservationRequests> {
   Future<void> handleRefresh() async {
-    context.read<MyReservationsService>().update();
+    context.read<ReservationRequestService>().update();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleRefresh();
   }
 
   @override

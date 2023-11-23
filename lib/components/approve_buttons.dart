@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:weplan/models/enum/approval.dart';
+import 'package:weplan/services/reservation_request_service.dart';
 import 'package:weplan/viewmodels/schedule.dart';
 
 class ApproveButtons extends StatelessWidget {
@@ -15,7 +18,10 @@ class ApproveButtons extends StatelessWidget {
         IconButton(
           onPressed: () {
             // FIXME: Bug when converting Approval Enum to String automatically
-            schedule.approve(Approval.REJECTED);
+            // TODO: seperate updating logic from the component
+            schedule.approve(Approval.REJECTED).then(
+                  (value) => context.read<ReservationRequestService>().update(),
+                );
           },
           icon: const Icon(
             Icons.close_rounded,
@@ -25,7 +31,10 @@ class ApproveButtons extends StatelessWidget {
         IconButton(
           onPressed: () {
             // FIXME: Bug when converting Approval Enum to String automatically
-            schedule.approve(Approval.APPROVED);
+            // TODO: seperate updating logic from the component
+            schedule.approve(Approval.APPROVED).then(
+                  (value) => context.read<ReservationRequestService>().update(),
+                );
           },
           icon: const Icon(
             Icons.check,
