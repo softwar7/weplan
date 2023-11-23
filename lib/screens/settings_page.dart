@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:weplan/screens/theme_selection_page.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/theme/theme_provider.dart';
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});
@@ -13,6 +15,21 @@ class SettingsPage extends StatelessWidget {
           leading: const Icon(Icons.refresh),
           title: const Text('채널 동기화'),
           onTap: context.read<ChannelService>().updateChannels,
+        ),
+    (context) => ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text('테마 설정'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ThemeSelectionPage(),
+              ),
+            );
+          },
+          trailing: Text(
+            context.watch<ThemeProvider>().themeMode.toString().split('.').last,
+          ),
         ),
     (context) => ListTile(
           leading: const Icon(Icons.logout),
