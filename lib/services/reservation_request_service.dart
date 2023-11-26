@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/snackbar.dart';
@@ -23,25 +24,30 @@ class ReservationRequestService extends ChangeNotifier {
   Future<Map<int, ScheduleViewModel>> update({
     bool verbose = true,
   }) async {
-    List<Schedule> schedules =
-        await _api.admin.getScheduleRequests().then((value) {
-      if (verbose) showSnackBar(navigatorKey.currentContext!, '예약요청 목록 동기화 완료');
-      return value.schedules;
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '예약요청 목록을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
+    try {
+      List<Schedule> schedules = await _api.admin
+          .getScheduleRequests()
+          .then((value) => value.schedules);
 
-    this._scheduleMap = {
-      for (Schedule e in schedules) e.id: ScheduleViewModel(e),
-    };
-    notifyListeners();
-    return this._scheduleMap;
+      this._scheduleMap = {
+        for (Schedule e in schedules) e.id: ScheduleViewModel(e),
+      };
+
+      if (verbose && context.mounted) showSnackBar(context, '예약요청 목록 동기화 완료');
+      notifyListeners();
+      return this._scheduleMap;
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '예약요청 목록을 불러오는 중 오류가 발생했습니다.');
+      rethrow;
+    }
   }
 
   // Future<void> approve(int id, Approval approval, {bool verbose = true}) async {
   //   return await _api.admin
-  //       // TODO: Is there any way to send approval instead of approval.name?
   //       .approveSchedule(id: id, approval: approval)
   //       .then((value) {
   //     if (verbose) showSnackBar(context, '예약 승인 완료');

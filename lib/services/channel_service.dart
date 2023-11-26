@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weplan/components/menus.dart';
@@ -55,17 +56,24 @@ class ChannelService extends ChangeNotifier {
   Future<Map<int, ChannelViewModel>> updateChannels({
     bool verbose = true,
   }) async {
-    List<Channel> channels = await _api.guest.getChannels().then((value) {
-      if (verbose) showSnackBar(context, '채널 동기화 완료');
-      return value.channels;
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '채널을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
+    try {
+      List<Channel> channels = await _api.guest.getChannels().then((value) {
+        return value.channels;
+      });
 
-    this._channels = {for (Channel e in channels) e.id: ChannelViewModel(e)};
-    notifyListeners();
-    return this._channels;
+      this._channels = {for (Channel e in channels) e.id: ChannelViewModel(e)};
+      if (verbose && context.mounted) showSnackBar(context, '채널 동기화 완료');
+      notifyListeners();
+      return this._channels;
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '채널을 불러오는 중 오류가 발생했습니다.');
+
+      rethrow;
+    }
   }
 
   Future<void> createSchedule({
@@ -75,28 +83,27 @@ class ChannelService extends ChangeNotifier {
     required DateTime end,
     String? content,
     bool verbose = true,
-  }) {
-    return _api.guest
-        .createSchedule(
-      CreateScheduleRequest(
-        channelId: channelId,
-        name: name,
-        start: start,
-        end: end,
-        content: content,
-      ),
-    )
-        //   channelId: channelId,
-        //   name: name,
-        //   start: start.toIso8601String(),
-        //   end: end.toIso8601String(),
-        // )
-        .then((value) {
-      if (verbose) showSnackBar(context, '스케쥴 생성 완료');
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '스케쥴 생성 중 오류가 발생했습니다.');
-      throw e;
-    });
+  }) async {
+    try {
+      await _api.guest.createSchedule(
+        CreateScheduleRequest(
+          channelId: channelId,
+          name: name,
+          start: start,
+          end: end,
+          content: content,
+        ),
+      );
+
+      if (verbose && context.mounted) showSnackBar(context, '스케쥴 생성 완료');
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '스케쥴 생성 중 오류가 발생했습니다.');
+      rethrow;
+    }
   }
 
   // Admin Only
@@ -105,18 +112,20 @@ class ChannelService extends ChangeNotifier {
     String place, {
     bool verbose = true,
   }) async {
-    await _api.admin
-        .createChannel(
-      name: name,
-      place: place,
-    )
-        .then((value) {
-      if (verbose) showSnackBar(context, '채널 생성 완료');
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '채널 생성 중 오류가 발생했습니다.');
-      throw e;
-    });
-
-    await updateChannels(verbose: false);
+    try {
+      await _api.admin.createChannel(
+        name: name,
+        place: place,
+      );
+      if (verbose && context.mounted) showSnackBar(context, '채널 생성 완료');
+      updateChannels(verbose: false);
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '채널 생성 중 오류가 발생했습니다.');
+      rethrow;
+    }
   }
 }

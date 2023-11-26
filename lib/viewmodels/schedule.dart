@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -40,31 +41,40 @@ class ScheduleViewModel extends ChangeNotifier {
   Future<Schedule> updateSchedule({
     bool verbose = true,
   }) async {
-    Schedule schedule =
-        await api.guest.getSchedule(scheduleId: _schedule.id).then((value) {
-      if (verbose) showSnackBar(context, '스케쥴 동기화 완료');
-      return value;
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
-    this._schedule = schedule;
+    try {
+      Schedule schedule =
+          await api.guest.getSchedule(scheduleId: _schedule.id).then((value) {
+        if (verbose && context.mounted) showSnackBar(context, '스케쥴 동기화 완료');
+        return value;
+      });
 
-    notifyListeners();
-    return this._schedule;
+      this._schedule = schedule;
+      notifyListeners();
+      return this._schedule;
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null) {
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      } else
+        showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
+
+      rethrow;
+    }
   }
 
   Future<void> approve(Approval approval, {bool verbose = true}) async {
-    return await api.admin
-        // TODO: Is there any way to send approval instead of approval.name?
-        // .approveSchedule(id: this._schedule.id, approval: approval.name)
-        .approveSchedule(id: this._schedule.id, approval: approval)
-        .then((value) {
-      if (verbose) showSnackBar(context, '처리 완료');
-      return value;
-    }).catchError((e) {
-      if (verbose) showErrorSnackBar(context, '승인 중 오류가 발생했습니다.');
-      throw e;
-    });
+    try {
+      await api.admin
+          .approveSchedule(id: this._schedule.id, approval: approval);
+      if (verbose && context.mounted) showSnackBar(context, '처리 완료');
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '승인 중 오류가 발생했습니다.');
+
+      rethrow;
+    }
   }
 }
