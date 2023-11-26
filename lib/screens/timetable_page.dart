@@ -4,7 +4,6 @@ import 'package:flutter_timetable/flutter_timetable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/components/timetable.dart';
 import 'package:weplan/viewmodels/channel.dart';
 import 'package:weplan/viewmodels/schedule.dart';
@@ -22,11 +21,13 @@ class _TimeTableState extends State<TimeTable> {
   @override
   void initState() {
     super.initState();
+    widget.channel.updateSchedules();
+  }
 
-    widget.channel.updateSchedules().catchError((e) {
-      showErrorSnackBar(context, '스케쥴을 불러오는 중 오류가 발생했습니다.');
-      throw e;
-    });
+  @override
+  void didUpdateWidget(covariant TimeTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.channel.updateSchedules();
   }
 
   @override
