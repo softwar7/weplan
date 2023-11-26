@@ -145,7 +145,7 @@ class AuthService extends ChangeNotifier {
       password: password,
       name: name,
       phoneNumber: phoneNumber,
-      roleType: roleType.name,
+      roleType: roleType,
       adminPassword: adminPassword,
     );
 

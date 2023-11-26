@@ -40,7 +40,7 @@ class _SignRestClient implements SignRestClient {
     required String password,
     required String name,
     required String phoneNumber,
-    required String roleType,
+    required RoleType roleType,
     String? adminPassword,
   }) async {
     const _extra = <String, dynamic>{};

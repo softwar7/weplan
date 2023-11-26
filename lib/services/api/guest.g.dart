@@ -6,6 +6,26 @@ part of 'guest.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+CreateScheduleRequest _$CreateScheduleRequestFromJson(
+        Map<String, dynamic> json) =>
+    CreateScheduleRequest(
+      channelId: json['channelId'] as int,
+      name: json['name'] as String,
+      content: json['content'] as String?,
+      start: DateTime.parse(json['start'] as String),
+      end: DateTime.parse(json['end'] as String),
+    );
+
+Map<String, dynamic> _$CreateScheduleRequestToJson(
+        CreateScheduleRequest instance) =>
+    <String, dynamic>{
+      'channelId': instance.channelId,
+      'name': instance.name,
+      'content': instance.content,
+      'start': instance.start.toIso8601String(),
+      'end': instance.end.toIso8601String(),
+    };
+
 GetSchedulesResponse _$GetSchedulesResponseFromJson(
         Map<String, dynamic> json) =>
     GetSchedulesResponse(
@@ -169,25 +189,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<void> createSchedule({
-    required int channelId,
-    required String name,
-    String? content,
-    required String start,
-    required String end,
-  }) async {
+  Future<void> createSchedule(CreateScheduleRequest body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = {
-      'channelId': channelId,
-      'name': name,
-      'content': content,
-      'start': start,
-      'end': end,
-    };
-    _data.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
@@ -214,7 +221,7 @@ class _RestClient implements RestClient {
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'approval': approval?.name,
+      r'approval': approval?.toJson(),
       r'start': start?.toIso8601String(),
       r'end': end?.toIso8601String(),
     };

@@ -7,6 +7,7 @@ import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/channel.dart';
 import 'package:weplan/screens/forms/schedule_form.dart';
 import 'package:weplan/screens/timetable_page.dart';
+import 'package:weplan/services/api/guest.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/channel.dart';
@@ -77,11 +78,19 @@ class ChannelService extends ChangeNotifier {
   }) {
     return _api.guest
         .createSchedule(
-      channelId: channelId,
-      name: name,
-      start: start.toIso8601String(),
-      end: end.toIso8601String(),
+      CreateScheduleRequest(
+        channelId: channelId,
+        name: name,
+        start: start,
+        end: end,
+        content: content,
+      ),
     )
+        //   channelId: channelId,
+        //   name: name,
+        //   start: start.toIso8601String(),
+        //   end: end.toIso8601String(),
+        // )
         .then((value) {
       if (verbose) showSnackBar(context, '스케쥴 생성 완료');
     }).catchError((e) {

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
+import 'package:weplan/models/enum/approval.dart';
 import 'package:weplan/models/schedule.dart';
 
 part 'admin.g.dart';
@@ -40,7 +41,7 @@ abstract class AdminRestClient {
   Future<void> approveSchedule({
     @Field() required int id,
     // TODO: Is there a way to convert Approval Enum to String automatically?
-    @Field() required String approval,
+    @Field() required Approval approval,
   });
 }
 

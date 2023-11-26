@@ -57,7 +57,8 @@ class ScheduleViewModel extends ChangeNotifier {
   Future<void> approve(Approval approval, {bool verbose = true}) async {
     return await api.admin
         // TODO: Is there any way to send approval instead of approval.name?
-        .approveSchedule(id: this._schedule.id, approval: approval.name)
+        // .approveSchedule(id: this._schedule.id, approval: approval.name)
+        .approveSchedule(id: this._schedule.id, approval: approval)
         .then((value) {
       if (verbose) showSnackBar(context, '처리 완료');
       return value;

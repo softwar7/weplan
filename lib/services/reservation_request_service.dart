@@ -42,7 +42,7 @@ class ReservationRequestService extends ChangeNotifier {
   // Future<void> approve(int id, Approval approval, {bool verbose = true}) async {
   //   return await _api.admin
   //       // TODO: Is there any way to send approval instead of approval.name?
-  //       .approveSchedule(id: id, approval: approval.name)
+  //       .approveSchedule(id: id, approval: approval)
   //       .then((value) {
   //     if (verbose) showSnackBar(context, '예약 승인 완료');
   //   }).catchError((e) {

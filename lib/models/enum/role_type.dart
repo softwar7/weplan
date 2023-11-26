@@ -1,10 +1,25 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:json_annotation/json_annotation.dart';
+class RoleType {
+  static const ADMIN = RoleType('ADMIN');
+  static const GUEST = RoleType('GUEST');
 
-enum RoleType {
-  @JsonValue('ADMIN')
-  ADMIN,
-  @JsonValue('GUEST')
-  GUEST,
+  final String _value;
+  const RoleType(this._value);
+
+  static List<RoleType> get values => [ADMIN, GUEST];
+
+  @override
+  String toString() => _value;
+
+  factory RoleType.fromJson(String json) {
+    if (json == 'ADMIN') {
+      return ADMIN;
+    } else if (json == 'GUEST') {
+      return GUEST;
+    } else {
+      throw Error();
+    }
+  }
+  String toJson() => toString();
 }

@@ -12,7 +12,7 @@ Schedule _$ScheduleFromJson(Map<String, dynamic> json) => Schedule(
       start: DateTime.parse(json['start'] as String),
       end: DateTime.parse(json['end'] as String),
       channelId: json['channelId'] as int,
-      approval: $enumDecode(_$ApprovalEnumMap, json['approval']),
+      approval: Approval.fromJson(json['approval'] as String),
       content: json['content'] as String?,
     );
 
@@ -23,11 +23,5 @@ Map<String, dynamic> _$ScheduleToJson(Schedule instance) => <String, dynamic>{
       'start': instance.start.toIso8601String(),
       'end': instance.end.toIso8601String(),
       'channelId': instance.channelId,
-      'approval': _$ApprovalEnumMap[instance.approval]!,
+      'approval': instance.approval,
     };
-
-const _$ApprovalEnumMap = {
-  Approval.APPROVED: 'APPROVED',
-  Approval.PENDING: 'PENDING',
-  Approval.REJECTED: 'REJECTED',
-};

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/models/channel.dart';
 import 'package:weplan/models/schedule.dart';
+import 'package:weplan/services/api/guest.dart';
 import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/schedule.dart';
@@ -73,11 +74,13 @@ class ChannelViewModel extends ChangeNotifier {
   }) async {
     return await _api.guest
         .createSchedule(
-      channelId: channelId ?? _channel.id,
-      name: name,
-      start: start.toIso8601String(),
-      end: end.toIso8601String(),
-      content: content,
+      CreateScheduleRequest(
+        channelId: channelId ?? _channel.id,
+        name: name,
+        start: start,
+        end: end,
+        content: content,
+      ),
     )
         .then((value) {
       if (verbose) showSnackBar(context, '스케쥴 생성 완료');
