@@ -28,7 +28,7 @@ class ChannelViewModel extends ChangeNotifier {
   Map<int, ScheduleViewModel> get schedules => _schedules;
 
   Future<Channel> updateChannel({
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       this._channel = await _api.guest
@@ -54,7 +54,7 @@ class ChannelViewModel extends ChangeNotifier {
   Future<Map<int, ScheduleViewModel>> updateSchedules({
     DateTime? start,
     DateTime? end,
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       List<Schedule> schedules =
@@ -86,7 +86,7 @@ class ChannelViewModel extends ChangeNotifier {
     required DateTime start,
     required DateTime end,
     String? content,
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       await _api.guest.createSchedule(

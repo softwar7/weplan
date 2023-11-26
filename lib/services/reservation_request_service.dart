@@ -22,7 +22,7 @@ class ReservationRequestService extends ChangeNotifier {
   List<ScheduleViewModel> get list => this._scheduleMap.values.toList();
 
   Future<Map<int, ScheduleViewModel>> update({
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       List<Schedule> schedules = await _api.admin
@@ -46,7 +46,7 @@ class ReservationRequestService extends ChangeNotifier {
     }
   }
 
-  // Future<void> approve(int id, Approval approval, {bool verbose = true}) async {
+  // Future<void> approve(int id, Approval approval, {bool verbose = false}) async {
   //   return await _api.admin
   //       .approveSchedule(id: id, approval: approval)
   //       .then((value) {

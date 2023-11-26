@@ -14,7 +14,8 @@ class SettingsPage extends StatelessWidget {
     (context) => ListTile(
           leading: const Icon(Icons.refresh),
           title: const Text('채널 동기화'),
-          onTap: context.read<ChannelService>().updateChannels,
+          onTap: () =>
+              context.read<ChannelService>().updateChannels(verbose: true),
         ),
     (context) => ListTile(
           leading: const Icon(Icons.settings),

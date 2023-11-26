@@ -39,7 +39,7 @@ class ScheduleViewModel extends ChangeNotifier {
   }
 
   Future<Schedule> updateSchedule({
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       Schedule schedule =
@@ -62,7 +62,7 @@ class ScheduleViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> approve(Approval approval, {bool verbose = true}) async {
+  Future<void> approve(Approval approval, {bool verbose = false}) async {
     try {
       await api.admin
           .approveSchedule(id: this._schedule.id, approval: approval);

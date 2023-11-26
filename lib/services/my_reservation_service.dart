@@ -22,7 +22,7 @@ class MyReservationsService extends ChangeNotifier {
   List<ScheduleViewModel> get list => this._scheduleMap.values.toList();
 
   Future<Map<int, ScheduleViewModel>> update({
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       List<Schedule> schedules =

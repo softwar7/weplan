@@ -45,7 +45,7 @@ class ChannelService extends ChangeNotifier {
               ),
               IconButton(
                 icon: const Icon(Icons.refresh),
-                onPressed: e.updateSchedules,
+                onPressed: () => e.updateSchedules(verbose: true),
               ),
             ],
           ),
@@ -54,7 +54,7 @@ class ChannelService extends ChangeNotifier {
   }
 
   Future<Map<int, ChannelViewModel>> updateChannels({
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       List<Channel> channels = await _api.guest.getChannels().then((value) {
@@ -82,7 +82,7 @@ class ChannelService extends ChangeNotifier {
     required DateTime start,
     required DateTime end,
     String? content,
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       await _api.guest.createSchedule(
@@ -110,7 +110,7 @@ class ChannelService extends ChangeNotifier {
   Future<void> createChannel(
     String name,
     String place, {
-    bool verbose = true,
+    bool verbose = false,
   }) async {
     try {
       await _api.admin.createChannel(
