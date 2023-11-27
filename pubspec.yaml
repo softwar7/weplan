@@ -52,6 +52,8 @@ dependencies:
     sdk: flutter
   timeago: ^3.6.0
   shared_preferences: ^2.2.2
+  firebase_messaging: ^14.7.5
+  firebase_core: ^2.23.0
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-package com.example.weplan
+package com.parkjb.weplan
 
 import io.flutter.embedding.android.FlutterActivity
 
