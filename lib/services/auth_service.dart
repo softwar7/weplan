@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/dio.dart';
 
 import 'package:weplan/models/enum/role_type.dart';
-import 'package:weplan/services/api/error.dart';
+import 'package:weplan/services/api/interceptors/error.dart';
 import 'package:weplan/services/api/sign.dart';
 import 'package:weplan/services/storage/auth.dart';
 import 'package:weplan/utils/logger.dart';
