@@ -28,7 +28,7 @@ class ChannelService extends ChangeNotifier {
     return _channels.values
         .map(
           (e) => Menu(
-            title: e.name,
+            title: '${e.name} @ ${e.place}',
             icon: const Icon(Icons.calendar_today_outlined),
             body: TimeTable(channel: e),
             actions: [
