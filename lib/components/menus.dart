@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:weplan/screens/admin_channel_management.dart';
 import 'package:weplan/screens/forms/channel_form.dart';
 import 'package:weplan/screens/my_reservations.dart';
 import 'package:weplan/screens/reservation_requests.dart';
 import 'package:weplan/screens/settings_page.dart';
+import 'package:weplan/utils/navigator.dart';
 
 class Menu {
   String title;
@@ -24,9 +26,22 @@ class Menu {
 class Menus {
   static final List<Menu> admins = [
     Menu(
-      title: '채널 생성',
-      icon: const Icon(Icons.add_rounded),
-      body: const ChannelForm(),
+      title: '채널 관리',
+      icon: const Icon(Icons.list_outlined),
+      body: const ChannelManagement(),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add_rounded),
+          onPressed: () {
+            Navigator.push(
+              navigatorKey.currentContext!,
+              MaterialPageRoute(
+                builder: (context) => const ChannelForm(),
+              ),
+            );
+          },
+        ),
+      ],
     ),
     Menu(
       title: '예약요청 목록',

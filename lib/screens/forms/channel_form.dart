@@ -23,49 +23,54 @@ class _ChannelFormState extends State<ChannelForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      child: Form(
-        key: _formKey,
-        autovalidateMode: _autovalidateMode,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              validator: (value) => validate(value, Validator.name),
-              onSaved: (value) => this.name = value!,
-              decoration: const InputDecoration(
-                labelText: '이름',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('채널 생성'),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: _autovalidateMode,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (value) => validate(value, Validator.name),
+                onSaved: (value) => this.name = value!,
+                decoration: const InputDecoration(
+                  labelText: '이름',
+                ),
               ),
-            ),
-            TextFormField(
-              validator: (value) => validate(value, Validator.name),
-              onSaved: (value) => this.place = value!,
-              decoration: const InputDecoration(
-                labelText: '장소',
+              TextFormField(
+                validator: (value) => validate(value, Validator.name),
+                onSaved: (value) => this.place = value!,
+                decoration: const InputDecoration(
+                  labelText: '장소',
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  context
-                      .read<ChannelService>()
-                      .createChannel(this.name, this.place)
-                      .catchError(
-                        (e) => showErrorSnackBar(
-                          context,
-                          e.toString(),
-                        ),
-                      );
-                } else {
-                  setState(() {
-                    _autovalidateMode = AutovalidateMode.onUserInteraction;
-                  });
-                }
-              },
-              child: const Text('채널 생성'),
-            ),
-          ],
+              TextButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    context
+                        .read<ChannelService>()
+                        .createChannel(this.name, this.place)
+                        .catchError(
+                          (e) => showErrorSnackBar(
+                            context,
+                            e.toString(),
+                          ),
+                        );
+                  } else {
+                    setState(() {
+                      _autovalidateMode = AutovalidateMode.onUserInteraction;
+                    });
+                  }
+                },
+                child: const Text('채널 생성'),
+              ),
+            ],
+          ),
         ),
       ),
     );
