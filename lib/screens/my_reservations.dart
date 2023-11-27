@@ -30,6 +30,9 @@ class _MyReservationsState extends State<MyReservations> {
     return RefreshIndicator(
       onRefresh: handleRefresh,
       child: ListView.separated(
+        separatorBuilder: (context, index) =>
+            const Divider(height: 1, thickness: 0.1),
+        itemCount: items.length,
         itemBuilder: (context, index) {
           return ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -57,9 +60,6 @@ class _MyReservationsState extends State<MyReservations> {
             },
           );
         },
-        separatorBuilder: (context, index) =>
-            const Divider(height: 1, thickness: 0.1),
-        itemCount: items.length,
       ),
     );
   }
