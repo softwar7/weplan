@@ -36,7 +36,7 @@ class Menus {
             Navigator.push(
               navigatorKey.currentContext!,
               MaterialPageRoute(
-                builder: (context) => const ChannelForm(),
+                builder: (context) => const ChannelFormScaffold(),
               ),
             );
           },

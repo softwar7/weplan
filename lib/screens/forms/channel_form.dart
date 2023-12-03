@@ -5,15 +5,16 @@ import 'package:provider/provider.dart';
 import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/viewmodels/channel.dart';
 
-class ChannelForm extends StatefulWidget {
-  const ChannelForm({super.key});
+class ChannelFormScaffold extends StatefulWidget {
+  const ChannelFormScaffold({super.key});
 
   @override
-  State<ChannelForm> createState() => _ChannelFormState();
+  State<ChannelFormScaffold> createState() => _ChannelFormScaffoldState();
 }
 
-class _ChannelFormState extends State<ChannelForm> {
+class _ChannelFormScaffoldState extends State<ChannelFormScaffold> {
   final _formKey = GlobalKey<FormState>();
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
@@ -33,6 +34,7 @@ class _ChannelFormState extends State<ChannelForm> {
           key: _formKey,
           autovalidateMode: _autovalidateMode,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextFormField(
                 validator: (value) => validate(value, Validator.name),
@@ -61,6 +63,7 @@ class _ChannelFormState extends State<ChannelForm> {
                             e.toString(),
                           ),
                         );
+                    Navigator.pop(context);
                   } else {
                     setState(() {
                       _autovalidateMode = AutovalidateMode.onUserInteraction;
@@ -73,6 +76,84 @@ class _ChannelFormState extends State<ChannelForm> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ChannelFormAlertDialog extends StatefulWidget {
+  final ChannelViewModel channel;
+  // final GlobalKey<FormState> formKey;
+  const ChannelFormAlertDialog({
+    super.key,
+    // required this.formKey,
+    required this.channel,
+  });
+
+  @override
+  State<ChannelFormAlertDialog> createState() => _ChannelFormAlertDialogState();
+}
+
+class _ChannelFormAlertDialogState extends State<ChannelFormAlertDialog> {
+  final _formKey = GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  String name = '';
+  String place = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('채널 수정'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              initialValue: widget.channel.name,
+              decoration: const InputDecoration(
+                labelText: '채널 이름',
+              ),
+              onSaved: (value) => this.name = value!,
+            ),
+            TextFormField(
+              initialValue: widget.channel.place,
+              decoration: const InputDecoration(
+                labelText: '장소',
+              ),
+              onSaved: (value) => this.place = value!,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('취소'),
+        ),
+        TextButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              await widget.channel
+                  .modifyChannel(
+                    name: name,
+                    place: place,
+                  )
+                  .then((_) => context.read<ChannelService>().updateChannels());
+              if (!context.mounted) return;
+              Navigator.pop(context);
+              Navigator.pop(context);
+            } else {
+              setState(() {
+                _autovalidateMode = AutovalidateMode.onUserInteraction;
+              });
+            }
+          },
+          child: const Text('수정'),
+        ),
+      ],
     );
   }
 }

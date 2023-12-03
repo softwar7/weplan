@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:weplan/components/snackbar.dart';
+import 'package:weplan/screens/forms/channel_form.dart';
 import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/viewmodels/channel.dart';
 
 class ChannelManagement extends StatelessWidget {
   const ChannelManagement({super.key});
@@ -11,6 +12,7 @@ class ChannelManagement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var items = context.watch<ChannelService>().list;
+    // var formKey = GlobalKey<FormState>();
     return RefreshIndicator(
       onRefresh: context.read<ChannelService>().updateChannels,
       child: ListView.separated(
@@ -21,6 +23,7 @@ class ChannelManagement extends StatelessWidget {
             subtitle: Text(items[index].place),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
             onTap: () {
+              ChannelViewModel channel = items[index];
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
@@ -32,16 +35,22 @@ class ChannelManagement extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            items[index].name,
+                            channel.name,
                             style: const TextStyle(fontSize: 30),
                           ),
-                          Text(items[index].place),
+                          Text(channel.place),
                           const SizedBox(height: 32),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ElevatedButton(
+                              TextButton(
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.edit),
+                                    Text('수정'),
+                                  ],
+                                ),
                                 onPressed: () {
                                   showGeneralDialog(
                                     context: context,
@@ -50,71 +59,23 @@ class ChannelManagement extends StatelessWidget {
                                       animation,
                                       secondaryAnimation,
                                     ) {
-                                      return AlertDialog(
-                                        title: const Text('채널 수정'),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            TextFormField(
-                                              initialValue: items[index].name,
-                                              decoration: const InputDecoration(
-                                                labelText: '채널 이름',
-                                              ),
-                                              onChanged: (value) {
-                                                // TODO: Implement
-                                                // items[index].name = value;
-                                              },
-                                            ),
-                                            TextFormField(
-                                              initialValue: items[index].place,
-                                              decoration: const InputDecoration(
-                                                labelText: '장소',
-                                              ),
-                                              onChanged: (value) {
-                                                // TODO: Implement
-                                                // items[index].place = value;
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('취소'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              // TODO: Implement
-                                              // await context
-                                              //     .read<ChannelService>()
-                                              //     .updateChannel(
-                                              //       items[index].id,
-                                              //       items[index],
-                                              //     );
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              showErrorSnackBar(
-                                                context,
-                                                'Not implemented',
-                                              );
-                                            },
-                                            child: const Text('수정'),
-                                          ),
-                                        ],
+                                      return ChannelFormAlertDialog(
+                                        // formKey: formKey,
+                                        channel: channel,
                                       );
                                     },
                                   );
                                 },
+                              ),
+
+                              // 삭제버튼
+                              TextButton(
                                 child: const Column(
                                   children: [
-                                    Icon(Icons.edit),
-                                    Text('수정'),
+                                    Icon(Icons.delete),
+                                    Text('삭제'),
                                   ],
                                 ),
-                              ),
-                              ElevatedButton(
                                 onPressed: () {
                                   showGeneralDialog(
                                     context: context,
@@ -128,34 +89,30 @@ class ChannelManagement extends StatelessWidget {
                                         content: const Text('정말 삭제하시겠습니까?'),
                                         actions: [
                                           TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
                                             child: const Text('취소'),
+                                            onPressed: () =>
+                                                Navigator.pop(context),
                                           ),
                                           TextButton(
-                                            onPressed: () async {
-                                              // TODO: Implement
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              showErrorSnackBar(
-                                                context,
-                                                'Not implemented',
-                                              );
-                                            },
                                             child: const Text('삭제'),
+                                            onPressed: () async {
+                                              await channel
+                                                  .deleteChannel(verbose: true)
+                                                  .then(
+                                                    (_) => context
+                                                        .read<ChannelService>()
+                                                        .updateChannels(),
+                                                  );
+                                              if (!context.mounted) return;
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
                                           ),
                                         ],
                                       );
                                     },
                                   );
                                 },
-                                child: const Column(
-                                  children: [
-                                    Icon(Icons.delete),
-                                    Text('삭제'),
-                                  ],
-                                ),
                               ),
                             ],
                           ),
