@@ -34,16 +34,9 @@ abstract class RestClient {
     @Path('scheduleId') required int scheduleId,
   });
 
-  @POST('/schedules')
+  @POST('/schedules/requests')
   Future<void> createSchedule(
     @Body() CreateScheduleRequest body,
-    // @Field('channelId') required int channelId,
-    // @Field('name') required String name,
-    // @Field('content') String? content,
-    // // TODO: Is there a way to serialize DateTime to String?
-    // @Field('start') required String start,
-    // // TODO: Is there a way to serialize DateTime to String?
-    // @Field('end') required String end,
   );
 
   // // TODO
@@ -58,8 +51,8 @@ abstract class RestClient {
   //   @Path('scheduleId') int scheduleId,
   //   @Field('name') String? name,
   //   @Field('content') String? content,
-  //   @Field('start') String? start,
-  //   @Field('end') String? end,
+  //   @Field('start') DateTime? start,
+  //   @Field('end') DateTime? end,
   //   @Field('channelId') int? channelId,
   // });
 

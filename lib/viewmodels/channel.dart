@@ -51,6 +51,45 @@ class ChannelViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteChannel({
+    bool verbose = false,
+  }) async {
+    try {
+      await _api.admin.deleteChannel(channelId: this._channel.id);
+      if (verbose && context.mounted)
+        showSnackBar(context, '${_channel.name} 채널 삭제 완료');
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '${_channel.name} 채널을 삭제하는 중 오류가 발생했습니다.');
+      rethrow;
+    }
+  }
+
+  Future<void> modifyChannel({
+    String? name,
+    String? place,
+    bool verbose = false,
+  }) async {
+    try {
+      await _api.admin.modifyChannel(
+        channelId: this._channel.id,
+        name: name,
+        place: place,
+      );
+      if (verbose && context.mounted) showSnackBar(context, '채널 수정 완료');
+    } catch (e) {
+      if (verbose && context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '채널 수정 중 오류가 발생했습니다.');
+      rethrow;
+    }
+  }
+
   Future<Map<int, ScheduleViewModel>> updateSchedules({
     DateTime? start,
     DateTime? end,

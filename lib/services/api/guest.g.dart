@@ -202,7 +202,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '/schedules',
+          '/schedules/requests',
           queryParameters: queryParameters,
           data: _data,
         )

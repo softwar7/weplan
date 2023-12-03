@@ -69,6 +69,63 @@ class _AdminRestClient implements AdminRestClient {
   }
 
   @override
+  Future<void> deleteChannel({required int channelId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/channels/${channelId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<void> modifyChannel({
+    required int channelId,
+    String? name,
+    String? place,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'name': name,
+      'place': place,
+    };
+    _data.removeWhere((k, v) => v == null);
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/channels/${channelId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
   Future<GetSchedulesRequestsResponse> getScheduleRequests() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

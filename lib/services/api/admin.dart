@@ -19,19 +19,17 @@ abstract class AdminRestClient {
     @Field() required String place,
   });
 
-  // // TODO
-  // @DELETE('/channels/{channelId}')
-  // Future<void> deleteChannel({
-  //   @Path('channelId') String channelId,
-  // });
+  @DELETE('/channels/{channelId}')
+  Future<void> deleteChannel({
+    @Path('channelId') required int channelId,
+  });
 
-  // // TODO
-  // @PATCH('/channels/{channelId}')
-  // Future<void> updateChannel({
-  //   @Path('channelId') String channelId,
-  //   @Field() String? name,
-  //   @Field() String? place,
-  // });
+  @PATCH('/channels/{channelId}')
+  Future<void> modifyChannel({
+    @Path('channelId') required int channelId,
+    @Field() String? name,
+    @Field() String? place,
+  });
 
   // schedules
   @GET('/schedules/requests')
