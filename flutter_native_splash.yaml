@@ -19,12 +19,11 @@ flutter_native_splash:
   # The image parameter allows you to specify an image used in the splash screen.  It must be a
   # png file and should be sized for 4x pixel density.
 
-  # image: assets/weplan_icon_iOS.svg
-  color: "#ffffff"
+  color: "#f4f4f3"
   fullscreen: false
   image: assets/weplan_logo.png
-  ios_content_mode: fill
-  android_gravity: fill
+  ios_content_mode: scaleAspectFit 
+  # android_gravity: center
 
   # The branding property allows you to specify an image used as branding in the splash screen.
   # It must be a png file. It is supported for Android, iOS and the Web.  For Android 12,
