@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_timetable/flutter_timetable.dart';
@@ -18,16 +20,27 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
+  Timer? timer;
   @override
   void initState() {
     super.initState();
     widget.channel.updateSchedules();
+    timer = Timer.periodic(
+      const Duration(seconds: 15),
+      (Timer t) => widget.channel.updateSchedules(verbose: false),
+    );
   }
 
   @override
   void didUpdateWidget(covariant TimeTable oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.channel.updateSchedules();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
