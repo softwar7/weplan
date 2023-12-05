@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+//splash screen
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -25,6 +28,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FlutterNativeSplash.remove();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeProvider>(
