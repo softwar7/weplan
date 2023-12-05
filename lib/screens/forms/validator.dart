@@ -13,8 +13,8 @@ String? validate(String? value, bool Function(String) validator) {
 
 class Validator {
   static bool loginId(String value) {
-    // min 6 max 15, small case, starts with letter
-    if (RegExp(r'^[a-z][a-z0-9]{5,14}$').hasMatch(value)) {
+    // min 6 max 15, starts with letter
+    if (RegExp(r'^[A-Za-z][A-Za-z0-9]{5,14}$').hasMatch(value)) {
       return true;
     } else {
       throw '아이디는 6~15 자리여야 합니다.';
