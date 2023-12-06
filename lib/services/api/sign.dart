@@ -16,7 +16,6 @@ abstract class SignRestClient {
     @Field('password') required String password,
     @Field('name') required String name,
     @Field('phoneNumber') required String phoneNumber,
-    // TODO: Is there a way to serialize RoleType to String?
     @Field('roleType') required RoleType roleType,
     @Field('adminPassword') String? adminPassword,
   });

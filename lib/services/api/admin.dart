@@ -38,7 +38,6 @@ abstract class AdminRestClient {
   @POST('/schedules/requests')
   Future<void> approveSchedule({
     @Field() required int id,
-    // TODO: Is there a way to convert Approval Enum to String automatically?
     @Field() required Approval approval,
   });
 }
