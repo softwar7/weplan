@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/delete_button.dart';
+import 'package:weplan/components/modify_button.dart';
 import 'package:weplan/screens/forms/channel_form.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/viewmodels/channel.dart';
@@ -44,74 +46,22 @@ class ChannelManagement extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              TextButton(
-                                child: const Column(
-                                  children: [
-                                    Icon(Icons.edit),
-                                    Text('수정'),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (
-                                      context,
-                                      animation,
-                                      secondaryAnimation,
-                                    ) {
-                                      return ChannelFormAlertDialog(
-                                        // formKey: formKey,
-                                        channel: channel,
-                                      );
-                                    },
-                                  );
-                                },
+                              ModifyButton(
+                                alertDialog:
+                                    ChannelFormAlertDialog(channel: channel),
                               ),
-
-                              // 삭제버튼
-                              TextButton(
-                                child: const Column(
-                                  children: [
-                                    Icon(Icons.delete),
-                                    Text('삭제'),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (
-                                      context,
-                                      animation,
-                                      secondaryAnimation,
-                                    ) {
-                                      return AlertDialog(
-                                        title: const Text('채널 삭제'),
-                                        content: const Text('정말 삭제하시겠습니까?'),
-                                        actions: [
-                                          TextButton(
-                                            child: const Text('취소'),
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                          ),
-                                          TextButton(
-                                            child: const Text('삭제'),
-                                            onPressed: () async {
-                                              await channel
-                                                  .deleteChannel(verbose: true)
-                                                  .then(
-                                                    (_) => context
-                                                        .read<ChannelService>()
-                                                        .updateChannels(),
-                                                  );
-                                              if (!context.mounted) return;
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                              DeleteButton(
+                                title: '채널 삭제',
+                                handleDelete: () async {
+                                  await channel
+                                      .deleteChannel(verbose: true)
+                                      .then(
+                                        (_) => context
+                                            .read<ChannelService>()
+                                            .updateChannels(),
                                       );
-                                    },
-                                  );
+                                  if (!context.mounted) return;
+                                  Navigator.pop(context);
                                 },
                               ),
                             ],

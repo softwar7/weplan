@@ -6,7 +6,11 @@ import 'package:flutter_timetable/flutter_timetable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/delete_button.dart';
+import 'package:weplan/components/modify_button.dart';
 import 'package:weplan/components/timetable.dart';
+import 'package:weplan/screens/forms/schedule_form.dart';
+import 'package:weplan/services/my_reservation_service.dart';
 import 'package:weplan/viewmodels/channel.dart';
 import 'package:weplan/viewmodels/schedule.dart';
 
@@ -69,6 +73,29 @@ class _TimeTableState extends State<TimeTable> {
                       Text(
                         '종료시간: ${DateFormat('MM-dd HH:mm').format(schedule.end)}',
                       ),
+                      if (context
+                              .read<MyReservationsService>()
+                              .map[schedule.id] !=
+                          null)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ModifyButton(
+                              alertDialog:
+                                  ScheduleFormAlertDialog(schedule: schedule),
+                            ),
+                            DeleteButton(
+                              title: '스케줄 삭제',
+                              handleDelete: () async {
+                                await schedule.deleteSchedule(verbose: true);
+                                widget.channel.updateSchedules();
+                                if (!context.mounted) return;
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ),

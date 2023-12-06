@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/viewmodels/channel.dart';
+import 'package:weplan/viewmodels/schedule.dart';
 
 class ScheduleForm extends StatefulWidget {
   final ChannelViewModel channel;
@@ -173,6 +174,10 @@ class _ScheduleFormState extends State<ScheduleForm> {
               ),
               TextButton(
                 onPressed: () {
+                  if (start.isAfter(end))
+                    setState(() {
+                      this.end = start.add(const Duration(hours: 1));
+                    });
                   if (_formKey.currentState!.validate() && channelId != null) {
                     _formKey.currentState!.save();
                     context
@@ -201,6 +206,83 @@ class _ScheduleFormState extends State<ScheduleForm> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ScheduleFormAlertDialog extends StatefulWidget {
+  final ScheduleViewModel schedule;
+  const ScheduleFormAlertDialog({
+    super.key,
+    required this.schedule,
+  });
+
+  @override
+  State<ScheduleFormAlertDialog> createState() =>
+      _ScheduleFormAlertDialogState();
+}
+
+class _ScheduleFormAlertDialogState extends State<ScheduleFormAlertDialog> {
+  final _formKey = GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  String name = '';
+  String content = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('스케줄 수정'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              initialValue: widget.schedule.name,
+              decoration: const InputDecoration(
+                labelText: '스케줄 이름',
+              ),
+              onSaved: (value) => this.name = value!,
+            ),
+            TextFormField(
+              initialValue: widget.schedule.content ?? '',
+              decoration: const InputDecoration(
+                labelText: '내용',
+              ),
+              onSaved: (value) => this.content = value!,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('취소'),
+        ),
+        TextButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              await widget.schedule.modifySchedule(
+                name: name,
+                content: content,
+              );
+              // TODO: update channel schedules
+              // widget.channel.updateSchedules();
+              if (!context.mounted) return;
+              Navigator.pop(context);
+              Navigator.pop(context);
+            } else {
+              setState(() {
+                _autovalidateMode = AutovalidateMode.onUserInteraction;
+              });
+            }
+          },
+          child: const Text('수정'),
+        ),
+      ],
     );
   }
 }
