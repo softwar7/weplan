@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_timetable/flutter_timetable.dart';
+import 'package:intl/intl.dart';
 
 import 'package:weplan/viewmodels/schedule.dart';
 
@@ -50,6 +51,17 @@ class TimeTableComponent extends StatelessWidget {
     return Timetable(
       controller: controller,
       nowIndicatorColor: Colors.red,
+      headerCellBuilder: (datetime) {
+        return Center(
+          child: Text(
+            DateFormat('MM/dd\nE', 'ko_KR').format(datetime),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
       cellBuilder: (datetime) {
         return Container(
           decoration: BoxDecoration(
