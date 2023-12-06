@@ -214,6 +214,63 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<void> deleteSchedule({required int scheduleId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/schedules/${scheduleId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<void> modifySchedule({
+    required int scheduleId,
+    String? name,
+    String? content,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'name': name,
+      'content': content,
+    };
+    _data.removeWhere((k, v) => v == null);
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/schedules/${scheduleId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
   Future<GetSchedulesResponse> getScheduleRequests({
     Approval? approval,
     DateTime? start,

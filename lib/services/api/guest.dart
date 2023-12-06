@@ -39,22 +39,20 @@ abstract class RestClient {
     @Body() CreateScheduleRequest body,
   );
 
-  // // TODO
-  // @DELETE('/schedules/{scheduleId}')
-  // Future<void> deleteSchedule({
-  //   @Path('scheduleId') int scheduleId,
-  // });
+  @DELETE('/schedules/{scheduleId}')
+  Future<void> deleteSchedule({
+    @Path('scheduleId') required int scheduleId,
+  });
 
-  // // TODO
-  // @PATCH('/schedules/{scheduleId}')
-  // Future<void> updateSchedule({
-  //   @Path('scheduleId') int scheduleId,
-  //   @Field('name') String? name,
-  //   @Field('content') String? content,
-  //   @Field('start') DateTime? start,
-  //   @Field('end') DateTime? end,
-  //   @Field('channelId') int? channelId,
-  // });
+  @PATCH('/schedules/{scheduleId}')
+  Future<void> modifySchedule({
+    @Path('scheduleId') required int scheduleId,
+    @Field('name') String? name,
+    @Field('content') String? content,
+    // @Field('start') DateTime? start,
+    // @Field('end') DateTime? end,
+    // @Field('channelId') int? channelId,
+  });
 
   // schedules requests
   @GET('/schedules/requests')
@@ -63,8 +61,6 @@ abstract class RestClient {
     @Query('start') DateTime? start,
     @Query('end') DateTime? end,
   });
-  // @GET('/schedules/requests')
-  // Future<GetSchedulesResponse> getScheduleRequests();
 }
 
 extension Iso8061SerializableDateTime on DateTime {

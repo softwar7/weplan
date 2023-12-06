@@ -77,4 +77,43 @@ class ScheduleViewModel extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> modifySchedule({
+    String? name,
+    String? content,
+    bool verbose = false,
+  }) async {
+    try {
+      await api.guest.modifySchedule(
+        scheduleId: this._schedule.id,
+        name: name,
+        content: content,
+      );
+      if (verbose && context.mounted) showSnackBar(context, '스케줄 수정 완료');
+    } catch (e) {
+      if (verbose && context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '스케줄 수정 중 오류가 발생했습니다.');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteSchedule({
+    bool verbose = false,
+  }) async {
+    try {
+      await api.guest.deleteSchedule(scheduleId: this._schedule.id);
+      if (verbose && context.mounted)
+        showSnackBar(context, '${_schedule.name} 스케줄 삭제 완료');
+    } catch (e) {
+      if (context.mounted) if (e is DioException &&
+          e.response?.statusMessage != null)
+        showErrorSnackBar(context, e.response!.statusMessage!);
+      else
+        showErrorSnackBar(context, '${_schedule.name} 스케줄을 삭제하는 중 오류가 발생했습니다.');
+      rethrow;
+    }
+  }
 }
