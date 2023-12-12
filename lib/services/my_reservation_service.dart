@@ -17,7 +17,12 @@ class MyReservationsService extends ChangeNotifier {
 
   Map<int, ScheduleViewModel> _scheduleMap = {};
   Map<int, ScheduleViewModel> get map => this._scheduleMap;
-  List<ScheduleViewModel> get list => this._scheduleMap.values.toList();
+  List<ScheduleViewModel> get list {
+    var list = this._scheduleMap.values.toList();
+    // Descending order
+    list.sort((a, b) => b.start.compareTo(a.start));
+    return list;
+  }
 
   Future<Map<int, ScheduleViewModel>> update({
     bool verbose = false,
