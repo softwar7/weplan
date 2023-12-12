@@ -100,7 +100,7 @@ class ChannelService extends ChangeNotifier {
         ),
       );
 
-      if (verbose && context.mounted) showSnackBar(context, '스케쥴 생성 완료');
+      if (verbose && context.mounted) showSnackBar(context, '스케쥴 생성요청 완료');
     } catch (e) {
       if (context.mounted) if (e is DioException &&
           e.response?.statusMessage != null)
