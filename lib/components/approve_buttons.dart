@@ -17,7 +17,6 @@ class ApproveButtons extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-            // FIXME: Bug when converting Approval Enum to String automatically
             // TODO: seperate updating logic from the component
             schedule.approve(Approval.REJECTED).then(
                   (value) => context.read<ReservationRequestService>().update(),
@@ -30,7 +29,6 @@ class ApproveButtons extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            // FIXME: Bug when converting Approval Enum to String automatically
             // TODO: seperate updating logic from the component
             schedule.approve(Approval.APPROVED).then(
                   (value) => context.read<ReservationRequestService>().update(),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
+import 'package:weplan/components/snackbar.dart';
 import 'package:weplan/screens/forms/validator.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/viewmodels/channel.dart';
@@ -250,6 +251,7 @@ class _ScheduleFormAlertDialogState extends State<ScheduleFormAlertDialog> {
       title: const Text('스케줄 수정'),
       content: Form(
         key: _formKey,
+        autovalidateMode: _autovalidateMode,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -281,11 +283,20 @@ class _ScheduleFormAlertDialogState extends State<ScheduleFormAlertDialog> {
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              await widget.schedule.modifySchedule(
-                name: name,
-                content: content,
-              );
-              // TODO: update channel schedules
+              await widget.schedule
+                  .modifySchedule(
+                    name: name,
+                    content: content,
+                  )
+                  .then(
+                    (value) => context
+                        .read<ChannelService>()
+                        .map[widget.schedule.channelId]!
+                        .updateSchedules()
+                        .then((value) {
+                      showSnackBar(context, '수정 완료');
+                    }),
+                  );
               // widget.channel.updateSchedules();
               if (!context.mounted) return;
               Navigator.pop(context);

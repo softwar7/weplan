@@ -82,10 +82,8 @@ class _ChannelFormScaffoldState extends State<ChannelFormScaffold> {
 
 class ChannelFormAlertDialog extends StatefulWidget {
   final ChannelViewModel channel;
-  // final GlobalKey<FormState> formKey;
   const ChannelFormAlertDialog({
     super.key,
-    // required this.formKey,
     required this.channel,
   });
 
@@ -105,6 +103,7 @@ class _ChannelFormAlertDialogState extends State<ChannelFormAlertDialog> {
       title: const Text('채널 수정'),
       content: Form(
         key: _formKey,
+        autovalidateMode: _autovalidateMode,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
