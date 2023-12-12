@@ -7,6 +7,8 @@ import 'package:weplan/components/drawer/subject.dart';
 import 'package:weplan/components/menus.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/channel_service.dart';
+import 'package:weplan/services/my_reservation_service.dart';
+import 'package:weplan/services/reservation_request_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -18,6 +20,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
+  List<Menu> channels = [];
   List<Menu> admins = Menus.admins;
   List<Menu> etc = Menus.etc;
 
@@ -35,13 +38,25 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     context.read<ChannelService>().updateChannels();
+    context.read<MyReservationsService>().update();
+    context.read<ReservationRequestService>().update();
+  }
+
+  int _lastChannelLength = 0;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    channels = context.watch<ChannelService>().menus;
+
+    if (channels.length != _lastChannelLength) {
+      if (channels.length < _lastChannelLength) _selectedIndex--;
+      _lastChannelLength = channels.length;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var channels = context.watch<ChannelService>().menus;
     var isAdmin = context.watch<AuthService>().isAdmin;
-    // FIXME: if channel is deleted when updateChannels, _selectedIndex can be out of range.
     var selectedMenu =
         [...channels, if (isAdmin) ...admins, ...etc][_selectedIndex];
 
