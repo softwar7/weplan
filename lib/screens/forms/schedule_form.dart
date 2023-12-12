@@ -102,6 +102,10 @@ class _ScheduleFormState extends State<ScheduleForm> {
                             start.hour,
                             start.minute,
                           );
+                          if (start.isAfter(end) || start.isAtSameMomentAs(end))
+                            this.end = this.start.add(
+                                  const Duration(hours: 1),
+                                );
                         }),
                       );
                     },
@@ -121,6 +125,10 @@ class _ScheduleFormState extends State<ScheduleForm> {
                             value?.hour ?? start.hour,
                             value?.minute ?? start.minute,
                           );
+                          if (start.isAfter(end) || start.isAtSameMomentAs(end))
+                            this.end = this.start.add(
+                                  const Duration(hours: 1),
+                                );
                         }),
                       );
                     },
@@ -147,6 +155,10 @@ class _ScheduleFormState extends State<ScheduleForm> {
                             end.hour,
                             end.minute,
                           );
+                          if (start.isAfter(end) || start.isAtSameMomentAs(end))
+                            this.start = this.end.subtract(
+                                  const Duration(hours: 1),
+                                );
                         }),
                       );
                     },
@@ -166,6 +178,10 @@ class _ScheduleFormState extends State<ScheduleForm> {
                             value?.hour ?? end.hour,
                             value?.minute ?? end.minute,
                           );
+                          if (start.isAfter(end) || start.isAtSameMomentAs(end))
+                            this.start = this.end.subtract(
+                                  const Duration(hours: 1),
+                                );
                         }),
                       );
                     },
