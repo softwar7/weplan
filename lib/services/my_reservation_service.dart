@@ -13,9 +13,7 @@ class MyReservationsService extends ChangeNotifier {
   final ApiProvider _api;
 
   MyReservationsService(BuildContext context)
-      : this._api = context.read<ApiProvider>() {
-    this.update(verbose: false);
-  }
+      : this._api = context.read<ApiProvider>();
 
   Map<int, ScheduleViewModel> _scheduleMap = {};
   Map<int, ScheduleViewModel> get map => this._scheduleMap;
