@@ -29,42 +29,53 @@ class _ReservationRequestsState extends State<ReservationRequests> {
   Widget build(BuildContext context) {
     List<ScheduleViewModel> items =
         context.watch<ReservationRequestService>().list;
-    return RefreshIndicator(
-      onRefresh: handleRefresh,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-            title: Text(items[index].name),
-            subtitle: Text(items[index].startToEnd),
-            leading: ApprovalStatus(
-              approval: items[index].approval,
-            ),
-            trailing: ApproveButtons(schedule: items[index]),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(items[index].name),
-                  content: Text(
-                    '시작: ${items[index].start.toLocal()}\n종료: ${items[index].end.toLocal()}',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('확인'),
-                    ),
-                  ],
+    return LayoutBuilder(
+      builder: (context, constraints) => RefreshIndicator(
+        onRefresh: handleRefresh,
+        child: items.isEmpty
+            ? SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: const Center(child: Text('예약 요청이 없습니다.')),
                 ),
-              );
-            },
-          );
-        },
-        separatorBuilder: (context, index) =>
-            const Divider(height: 1, thickness: 0.1),
-        itemCount: items.length,
+              )
+            : ListView.separated(
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
+                    title: Text(items[index].name),
+                    subtitle: Text(items[index].startToEnd),
+                    leading: ApprovalStatus(
+                      approval: items[index].approval,
+                    ),
+                    trailing: ApproveButtons(schedule: items[index]),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(items[index].name),
+                          content: Text(
+                            '시작: ${items[index].start.toLocal()}\n종료: ${items[index].end.toLocal()}',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('확인'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    const Divider(height: 1, thickness: 0.1),
+                itemCount: items.length,
+              ),
       ),
     );
   }
