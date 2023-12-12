@@ -12,10 +12,6 @@ import 'package:weplan/services/api_provider.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/theme/theme_provider.dart';
 
-//splash screen
-
-
-
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -38,14 +34,17 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider(),
+          lazy: false,
         ),
         ChangeNotifierProvider<AuthService>(
           create: (_) => AuthService(),
+          lazy: false,
         ),
       ],
       builder: (context, child) => context.watch<AuthService>().isAuthenticated
           ? Provider<ApiProvider>(
               create: (_) => ApiProvider(context.watch<AuthService>()),
+              lazy: false,
               child: const MainMaterialApp(),
             )
           : const SignMaterialApp(),

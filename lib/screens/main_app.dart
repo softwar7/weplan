@@ -20,13 +20,16 @@ class MainMaterialApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ChannelService(),
+          create: (context) => ChannelService(context),
+          lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (context) => MyReservationsService(),
+          create: (context) => MyReservationsService(context),
+          lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (context) => ReservationRequestService(),
+          create: (context) => ReservationRequestService(context),
+          lazy: false,
         ),
       ],
       child: MaterialApp(

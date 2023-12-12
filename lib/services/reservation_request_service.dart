@@ -10,10 +10,10 @@ import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/schedule.dart';
 
 class ReservationRequestService extends ChangeNotifier {
-  final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
-  BuildContext context = navigatorKey.currentContext!;
+  final ApiProvider _api;
 
-  ReservationRequestService() {
+  ReservationRequestService(BuildContext context)
+      : this._api = context.read<ApiProvider>() {
     this.update();
   }
 
@@ -24,6 +24,7 @@ class ReservationRequestService extends ChangeNotifier {
   Future<Map<int, ScheduleViewModel>> update({
     bool verbose = false,
   }) async {
+    BuildContext context = navigatorKey.currentContext!;
     try {
       List<Schedule> schedules = await _api.admin
           .getScheduleRequests()

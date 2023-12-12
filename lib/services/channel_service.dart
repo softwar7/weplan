@@ -14,8 +14,10 @@ import 'package:weplan/utils/navigator.dart';
 import 'package:weplan/viewmodels/channel.dart';
 
 class ChannelService extends ChangeNotifier {
-  final ApiProvider _api = navigatorKey.currentContext!.read<ApiProvider>();
-  BuildContext context = navigatorKey.currentContext!;
+  final ApiProvider _api;
+
+  ChannelService(BuildContext context)
+      : this._api = context.read<ApiProvider>();
 
   Map<int, ChannelViewModel> _channels = {};
   Map<int, ChannelViewModel> get map => this._channels;
@@ -25,6 +27,7 @@ class ChannelService extends ChangeNotifier {
       );
 
   List<Menu> get menus {
+    BuildContext context = navigatorKey.currentContext!;
     return _channels.values
         .map(
           (e) => Menu(
@@ -56,6 +59,7 @@ class ChannelService extends ChangeNotifier {
   Future<Map<int, ChannelViewModel>> updateChannels({
     bool verbose = false,
   }) async {
+    BuildContext context = navigatorKey.currentContext!;
     try {
       List<Channel> channels = await _api.guest.getChannels().then((value) {
         return value.channels;
@@ -84,6 +88,7 @@ class ChannelService extends ChangeNotifier {
     String? content,
     bool verbose = false,
   }) async {
+    BuildContext context = navigatorKey.currentContext!;
     try {
       await _api.guest.createSchedule(
         CreateScheduleRequest(
@@ -112,6 +117,7 @@ class ChannelService extends ChangeNotifier {
     String place, {
     bool verbose = false,
   }) async {
+    BuildContext context = navigatorKey.currentContext!;
     try {
       await _api.admin.createChannel(
         name: name,
