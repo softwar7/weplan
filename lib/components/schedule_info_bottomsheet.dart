@@ -29,7 +29,8 @@ class ScheduleBottomSheet extends StatelessWidget {
           children: <Widget>[
             Text(schedule.name, style: const TextStyle(fontSize: 30)),
             const Padding(padding: EdgeInsets.all(10)),
-            Text('내용: ${schedule.content ?? '없음'}'),
+            if (schedule.content != null && schedule.content!.isNotEmpty)
+              Text('내용: ${schedule.content}'),
             Text(
               '시작시간: ${DateFormat('MM-dd HH:mm').format(schedule.start)}',
             ),
