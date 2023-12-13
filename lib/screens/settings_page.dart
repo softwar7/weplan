@@ -12,14 +12,16 @@ class SettingsPage extends StatelessWidget {
 
   final List<ListTile Function(BuildContext)> items = [
     (context) => ListTile(
-          leading: const Icon(Icons.refresh),
-          title: const Text('채널 동기화'),
+          leading: const Icon(Icons.sync,
+              color: Color.fromARGB(255, 10, 10, 10),), //새로고침 아이콘 색
+          title: const Text('채널 동기화',
+              style: TextStyle(color: Color.fromARGB(255, 10, 10, 10)),), //텍스트 색
           onTap: () =>
               context.read<ChannelService>().updateChannels(verbose: true),
         ),
     (context) => ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('테마 설정'),
+          leading: const Icon(Icons.contrast), //'테마 설정' 아이콘
+          title: const Text('테마 설정'), //'테마 설정' 텍스트
           onTap: () {
             Navigator.push(
               context,

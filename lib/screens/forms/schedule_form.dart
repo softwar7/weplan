@@ -54,6 +54,7 @@ class _ScheduleFormState extends State<ScheduleForm> {
                   labelText: '이름',
                 ),
               ),
+              const SizedBox(height: 15),
               TextFormField(
                 // validator: (value) => validate(value, Validator.name),
                 onSaved: (value) => this.content = value!,
@@ -61,9 +62,17 @@ class _ScheduleFormState extends State<ScheduleForm> {
                   labelText: '세부사항',
                 ),
               ),
+              const SizedBox(height: 15),
               DropdownButtonFormField(
                 value: channelId,
                 decoration: const InputDecoration(
+                  // border: UnderlineInputBorder(),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(40, 31, 31, 31),
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(),
                   labelText: '채널',
                 ),
                 items: context
@@ -83,6 +92,7 @@ class _ScheduleFormState extends State<ScheduleForm> {
                     });
                 },
               ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   const Text('시작시간'),

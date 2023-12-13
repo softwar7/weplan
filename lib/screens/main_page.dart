@@ -94,6 +94,9 @@ class _MainPageState extends State<MainPage> {
         actions: selectedMenu.actions,
       ),
       drawer: NavigationDrawer(
+        // backgroundColor: Color.fromRGBO(238, 245, 255, 1), //원래 회색
+        // backgroundColor: Color.fromRGBO(255, 181, 52, 1), //퍼머넌트 옐로우
+        backgroundColor: const Color.fromRGBO(250, 238, 209, 1),
         selectedIndex: _selectedIndex,
         onDestinationSelected: handleSelect,
         children: [
