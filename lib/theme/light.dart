@@ -63,15 +63,6 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   scaffoldBackgroundColor: Color.fromRGBO(244, 244, 243, 1), //앱자체 배경색
-  // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-  //   backgroundColor: Colors.white,
-  //   selectedItemColor: Color.fromARGB(255, 253, 86, 35),
-  //   selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-  //   unselectedItemColor: Colors.grey,
-  //   showSelectedLabels: true,
-  //   showUnselectedLabels: false,
-  //   type: BottomNavigationBarType.fixed,
-  // ),
 
   //밑에서 올라오는 창
   bottomSheetTheme: const BottomSheetThemeData(
