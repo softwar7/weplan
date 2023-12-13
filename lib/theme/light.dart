@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:weplan/theme/input_theme.dart';
+import 'package:weplan/theme/input_theme_light.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -8,6 +8,15 @@ ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     primary: Color.fromRGBO(48, 129, 208, 1), //커서 및 각종 텍스트색 영향받음
     secondary: Color.fromRGBO(109, 185, 239, 1),
+  ),
+  //입력 텍스트 색상
+  textTheme:const  TextTheme(
+    bodyLarge: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+  ),
+
+  drawerTheme: const DrawerThemeData(
+    backgroundColor: Color.fromRGBO(250, 238, 209, 1),
+    elevation: 0,
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 48, 128, 208),
@@ -22,7 +31,7 @@ ThemeData lightTheme = ThemeData(
     titleSpacing: 50.0,
   ),
   dialogTheme: DialogTheme(
-    backgroundColor:const  Color.fromRGBO(244, 242, 126, 1), //
+    backgroundColor: const Color.fromRGBO(244, 242, 126, 1), //
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
     ),
@@ -64,17 +73,8 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   scaffoldBackgroundColor:const  Color.fromRGBO(244, 244, 243, 1), //앱자체 배경색
-  // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-  //   backgroundColor: Colors.white,
-  //   selectedItemColor: Color.fromARGB(255, 253, 86, 35),
-  //   selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-  //   unselectedItemColor: Colors.grey,
-  //   showSelectedLabels: true,
-  //   showUnselectedLabels: false,
-  //   type: BottomNavigationBarType.fixed,
-  // ),
 
-  //밑에서 올라오는 창
+  //스케줄 상세정보 창
   bottomSheetTheme: const BottomSheetThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -82,5 +82,5 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Color.fromARGB(255, 244, 242, 126),
     modalBarrierColor: Colors.transparent,
   ),
-  inputDecorationTheme: InputTheme.defaultInputDecorationTheme,
+  inputDecorationTheme: InputThemeLight.defaultInputDecorationTheme,
 );

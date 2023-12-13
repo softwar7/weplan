@@ -89,7 +89,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/weplan_logo.png
+    - assets/weplan_logo_trans_light.png
+    - assets/weplan_logo_trans_dark.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

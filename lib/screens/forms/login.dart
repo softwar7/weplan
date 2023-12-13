@@ -36,21 +36,29 @@ class _LoginScaffoldState extends State<LoginScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WePlan',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'NanumGothic',
-              fontStyle: FontStyle.italic,
-            ),),
+        title: const Text(
+          'WePlan',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'NanumGothic',
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
       body: Center(
         child: Column(
           children: [
             Container(
               margin: const EdgeInsets.only(top: 150),
-              child: Image.asset('assets/weplan_logo.png',
-                  width: 256.54, height: 111.83, fit: BoxFit.fill,),
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/weplan_logo_trans_light.png'
+                    : 'assets/weplan_logo_trans_dark.png',
+                width: 256.54,
+                height: 111.83,
+                fit: BoxFit.fill,
+              ),
             ),
             Container(
               margin:
