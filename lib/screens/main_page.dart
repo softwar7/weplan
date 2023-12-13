@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -33,22 +35,49 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  Timer? timer;
+
   @override
   void initState() {
     super.initState();
+
     context.read<ChannelService>().updateChannels();
+    timer = Timer.periodic(
+      const Duration(seconds: 30),
+      (Timer t) =>
+          context.read<ChannelService>().updateChannels(verbose: false),
+    );
+
     context.read<MyReservationsService>().update();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
   int _lastChannelLength = 0;
+  List<int> _lastChannelIds = [];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     channels = context.watch<ChannelService>().menus;
+    var channelIds =
+        context.read<ChannelService>().list.map((e) => e.id).toList();
 
     if (channels.length != _lastChannelLength) {
-      if (channels.length < _lastChannelLength) _selectedIndex--;
+      if (channels.length < _lastChannelLength) {
+        int deletedChannelIndex = _lastChannelIds.indexWhere(
+          (element) => !channelIds.contains(element),
+        );
+
+        if (_selectedIndex >= deletedChannelIndex && _selectedIndex > 0)
+          _selectedIndex--;
+      }
       _lastChannelLength = channels.length;
+      _lastChannelIds = channelIds;
     }
   }
 
