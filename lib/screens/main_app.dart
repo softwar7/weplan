@@ -7,8 +7,8 @@ import 'package:weplan/screens/main_page.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/services/my_reservation_service.dart';
 import 'package:weplan/services/reservation_request_service.dart';
-import 'package:weplan/theme/dark.dart';
 import 'package:weplan/theme/light.dart';
+import 'package:weplan/theme/dark.dart';
 import 'package:weplan/theme/theme_provider.dart';
 import 'package:weplan/utils/navigator.dart';
 

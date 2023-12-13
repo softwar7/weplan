@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weplan/theme/input_theme.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   ThemeMode get themeMode => _themeMode;
+  // ThemeData get theme => _themeMode;
 
   ThemeProvider() {
     _loadFromStorage();

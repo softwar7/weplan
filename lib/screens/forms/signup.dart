@@ -59,6 +59,8 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                     labelText: '아이디',
                   ),
                 ),
+
+                const SizedBox(height: 15),
                 TextFormField(
                   obscureText: !_passwordVisible,
                   autofillHints: const [AutofillHints.password],
@@ -81,6 +83,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                   ),
                 ),
                 //name
+                const SizedBox(height: 15),
                 TextFormField(
                   autofillHints: const [AutofillHints.name],
                   validator: (value) => validate(value, Validator.name),
@@ -91,6 +94,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                 ),
 
                 //phone
+                const SizedBox(height: 15),
                 TextFormField(
                   autofillHints: const [AutofillHints.telephoneNumber],
                   validator: (value) => validate(value, Validator.phoneNumber),
@@ -100,6 +104,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                   ),
                 ),
 
+                const SizedBox(height: 20),
                 Column(
                   children: [
                     Row(
@@ -127,6 +132,7 @@ class _SignUpScaffoldState extends State<SignUpScaffold> {
                   ),
                 ),
 
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
