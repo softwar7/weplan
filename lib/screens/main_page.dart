@@ -8,7 +8,6 @@ import 'package:weplan/components/menus.dart';
 import 'package:weplan/services/auth_service.dart';
 import 'package:weplan/services/channel_service.dart';
 import 'package:weplan/services/my_reservation_service.dart';
-import 'package:weplan/services/reservation_request_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -39,7 +38,6 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     context.read<ChannelService>().updateChannels();
     context.read<MyReservationsService>().update();
-    context.read<ReservationRequestService>().update();
   }
 
   int _lastChannelLength = 0;
