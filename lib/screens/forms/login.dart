@@ -49,8 +49,14 @@ class _LoginScaffoldState extends State<LoginScaffold> {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 150),
-              child: Image.asset('assets/weplan_logo.png',
-                  width: 256.54, height: 111.83, fit: BoxFit.fill),
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'assets/weplan_logo_trans_light.png'
+                    : 'assets/weplan_logo_trans_dark.png',
+                width: 256.54,
+                height: 111.83,
+                fit: BoxFit.fill,
+              ),
             ),
             Container(
               margin:
