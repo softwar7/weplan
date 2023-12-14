@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:weplan/theme/input_theme_dark.dart';
 
 ThemeData darkTheme = ThemeData(
   useMaterial3: true,
@@ -12,7 +11,7 @@ ThemeData darkTheme = ThemeData(
     // onSecondary: Colors.white70,
   ),
   //입력 텍스트 색상
-  textTheme:const  TextTheme(
+  textTheme: const TextTheme(
     bodyLarge: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
   ),
 
@@ -32,7 +31,7 @@ ThemeData darkTheme = ThemeData(
     titleSpacing: 50.0,
   ),
   dialogTheme: DialogTheme(
-    backgroundColor:const  Color.fromARGB(255, 66, 64, 103),
+    backgroundColor: const Color.fromARGB(255, 66, 64, 103),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16.0),
     ),
@@ -51,7 +50,7 @@ ThemeData darkTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: const Color(0xFFF5E8C7),
-      foregroundColor:const  Color.fromARGB(255, 16, 11, 33),
+      foregroundColor: const Color.fromARGB(255, 16, 11, 33),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: const BorderSide(width: 1, color: Colors.white),
@@ -60,8 +59,7 @@ ThemeData darkTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      backgroundColor:const  Color(0xFFF5E8C7),
-      foregroundColor:const  Color.fromARGB(149, 16, 31, 47),
+      foregroundColor: Colors.lightBlueAccent,
       shadowColor: Colors.transparent,
       textStyle: const TextStyle(
         fontSize: 14,
@@ -69,7 +67,7 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
-  scaffoldBackgroundColor:const  Color(0xFF363062),
+  scaffoldBackgroundColor: const Color(0xFF363062),
 
   bottomSheetTheme: const BottomSheetThemeData(
     shape: RoundedRectangleBorder(
@@ -78,5 +76,5 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Color(0xFF4D4C7D),
     modalBarrierColor: Colors.transparent,
   ),
-  inputDecorationTheme: InputThemeDark.defaultInputDecorationTheme,
+  // inputDecorationTheme: InputThemeDark.defaultInputDecorationTheme,
 );

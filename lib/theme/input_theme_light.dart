@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class InputThemeLight {
   static InputDecorationTheme defaultInputDecorationTheme =
       const InputDecorationTheme(

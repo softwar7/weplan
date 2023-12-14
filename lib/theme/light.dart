@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:weplan/theme/input_theme_light.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -10,7 +9,7 @@ ThemeData lightTheme = ThemeData(
     secondary: Color.fromRGBO(109, 185, 239, 1),
   ),
   //입력 텍스트 색상
-  textTheme:const  TextTheme(
+  textTheme: const TextTheme(
     bodyLarge: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
   ),
 
@@ -19,19 +18,19 @@ ThemeData lightTheme = ThemeData(
     elevation: 0,
   ),
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color.fromARGB(255, 48, 128, 208),
-    iconTheme: IconThemeData(color: Colors.white),
+    backgroundColor: Color.fromRGBO(250, 238, 209, 1),
     centerTitle: true,
-    // shadowColor: Colors.black,
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: Colors.black,
       fontSize: 20,
       fontStyle: FontStyle.normal,
     ),
+    iconTheme: IconThemeData(color: Colors.black),
+    actionsIconTheme: IconThemeData(color: Colors.black),
     titleSpacing: 50.0,
   ),
   dialogTheme: DialogTheme(
-    backgroundColor: const Color.fromRGBO(244, 242, 126, 1), //
+    backgroundColor: const Color.fromRGBO(250, 238, 209, 1),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
     ),
@@ -49,12 +48,8 @@ ThemeData lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      // backgroundColor: Color.fromARGB(255, 48, 128, 208),
       disabledBackgroundColor: const Color.fromARGB(50, 48, 128, 208),
       disabledForegroundColor: const Color.fromARGB(150, 25, 67, 109),
-      // backgroundColor: const Color.fromARGB(50, 48, 128, 208),
-      // foregroundColor: const Color.fromARGB(150, 25, 67, 109),
-
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: const BorderSide(width: 1, color: Colors.white),
@@ -63,8 +58,6 @@ ThemeData lightTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      backgroundColor: const Color.fromARGB(50, 48, 128, 208),
-      foregroundColor: const Color.fromARGB(150, 25, 67, 109),
       shadowColor: Colors.transparent,
       textStyle: const TextStyle(
         fontSize: 14,
@@ -72,15 +65,15 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  scaffoldBackgroundColor:const  Color.fromRGBO(244, 244, 243, 1), //앱자체 배경색
+  scaffoldBackgroundColor: const Color.fromRGBO(250, 238, 209, 1),
 
   //스케줄 상세정보 창
   bottomSheetTheme: const BottomSheetThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    backgroundColor: Color.fromARGB(255, 244, 242, 126),
+    backgroundColor: Color.fromRGBO(250, 238, 209, 1),
     modalBarrierColor: Colors.transparent,
   ),
-  inputDecorationTheme: InputThemeLight.defaultInputDecorationTheme,
+  // inputDecorationTheme: InputThemeLight.defaultInputDecorationTheme,
 );
